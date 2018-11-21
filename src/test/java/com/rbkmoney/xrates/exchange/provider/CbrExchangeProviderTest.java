@@ -1,8 +1,10 @@
-package com.rbkmoney.xrates.exchange.impl.provider.cbr;
+package com.rbkmoney.xrates.exchange.provider;
 
 import com.rbkmoney.xrates.domain.ExchangeRate;
 import com.rbkmoney.xrates.exception.ProviderUnavailableResultException;
 import com.rbkmoney.xrates.exchange.ExchangeProvider;
+import com.rbkmoney.xrates.exchange.impl.provider.cbr.CbrExchangeProvider;
+import com.rbkmoney.xrates.exchange.impl.provider.cbr.adapter.CbrLocalDateXmlAdapter;
 import org.joda.money.CurrencyUnit;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -34,7 +36,7 @@ public class CbrExchangeProviderTest {
                 requestTo(CbrExchangeProvider.DEFAULT_ENDPOINT + "?date_req=" + CbrExchangeProvider.DATE_TIME_FORMATTER.format(date))
         ).andRespond(
                 withSuccess(
-                        "<ValCurs Date=\"20.11.2018\" name=\"Foreign Currency Market\">\n" +
+                        "<ValCurs Date=\"" + CbrLocalDateXmlAdapter.DATE_FORMATTER.format(date) + "\" name=\"Foreign Currency Market\">\n" +
                                 "<Valute ID=\"R01010\">\n" +
                                 "<NumCode>036</NumCode>\n" +
                                 "<CharCode>" + currencyCode + "</CharCode>\n" +
@@ -55,8 +57,8 @@ public class CbrExchangeProviderTest {
         );
         assertEquals(1, exchangeRates.size());
         ExchangeRate exchangeRate = exchangeRates.get(0);
-        assertEquals(CbrExchangeProvider.DESTINATION_CURRENCY_UNIT, exchangeRate.getSourceCurrency());
-        assertEquals(CurrencyUnit.of(currencyCode), exchangeRate.getDestinationCurrency());
+        assertEquals(CurrencyUnit.of(currencyCode), exchangeRate.getSourceCurrency());
+        assertEquals(CbrExchangeProvider.DESTINATION_CURRENCY_UNIT, exchangeRate.getDestinationCurrency());
         assertEquals(new BigDecimal(valueString), exchangeRate.getConversionRate());
 
         mockServer.verify();
@@ -102,7 +104,7 @@ public class CbrExchangeProviderTest {
         try {
             ExchangeProvider exchangeProvider = new CbrExchangeProvider(restTemplate);
             exchangeProvider.getExchangeRates(
-                    LocalDate.of(2018, 11, 20).atStartOfDay()
+                    date.atStartOfDay()
                             .atZone(CbrExchangeProvider.DEFAULT_TIMEZONE)
                             .toInstant()
             );
@@ -119,7 +121,7 @@ public class CbrExchangeProviderTest {
                         withSuccess()
                                 .contentType(MediaType.parseMediaType("application/xml; charset=windows-1251"))
                                 .body(
-                                        "<ValCurs Date=\"20.11.2018\" name=\"Foreign Currency Market\"></ValCurs>"
+                                        "<ValCurs Date=\"" + CbrLocalDateXmlAdapter.DATE_FORMATTER.format(date) + "\" name=\"Foreign Currency Market\"></ValCurs>"
                                 )
                 );
 
