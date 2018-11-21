@@ -6,10 +6,7 @@ import com.rbkmoney.xrates.base.Rational;
 import com.rbkmoney.xrates.base.TimestampInterval;
 import com.rbkmoney.xrates.domain.ExchangeRate;
 import com.rbkmoney.xrates.domain.SourceData;
-import com.rbkmoney.xrates.rate.Change;
-import com.rbkmoney.xrates.rate.Currency;
-import com.rbkmoney.xrates.rate.ExchangeRateData;
-import com.rbkmoney.xrates.rate.Quote;
+import com.rbkmoney.xrates.rate.*;
 import org.apache.commons.math3.fraction.BigFraction;
 import org.joda.money.CurrencyUnit;
 
@@ -44,7 +41,7 @@ public class ProtoUtil {
         exchangeRateData.setInterval(
                 new TimestampInterval(sourceData.getLowerBound().toString(), sourceData.getUpperBound().toString())
         );
-        exchangeRateData.setQoutes(
+        exchangeRateData.setQuotes(
                 sourceData.getRates().stream().map(
                         exchangeRate -> new Quote(
                                 buildCurrency(exchangeRate.getSourceCurrency()),
@@ -53,7 +50,7 @@ public class ProtoUtil {
                         )
                 ).collect(Collectors.toList())
         );
-        return Change.created(exchangeRateData);
+        return Change.created(new ExchangeRateCreated(exchangeRateData));
     }
 
     public static Rational buildExchangeRate(ExchangeRate exchangeRate) {

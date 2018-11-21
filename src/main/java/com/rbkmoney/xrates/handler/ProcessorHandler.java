@@ -55,7 +55,7 @@ public class ProcessorHandler extends AbstractProcessorHandler<ExchangeRateData,
             throw new IllegalStateException("Failed to process signal timeout because previous changes not found");
         }
 
-        Instant upperBound = Instant.parse(change.getCreated().getInterval().getUpperBoundExclusive());
+        Instant upperBound = Instant.parse(change.getCreated().getExchangeRateData().getInterval().getUpperBoundExclusive());
         try {
             SourceData sourceData = exchangeRateService.getExchangeRatesBySourceType(Optional.of(upperBound), sourceType);
 
