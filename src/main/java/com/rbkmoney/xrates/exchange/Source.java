@@ -24,11 +24,10 @@ public class Source {
     private final SourceType sourceType;
 
     public SourceData getSourceDataFromInitialTime() throws ProviderUnavailableResultException {
-        return getSourceData(Optional.empty());
+        return getSourceData(initialTime);
     }
 
-    public SourceData getSourceData(Optional<Instant> executionTimeOptional) throws ProviderUnavailableResultException {
-        Instant executionTime = executionTimeOptional.orElse(initialTime);
+    public SourceData getSourceData(Instant executionTime) throws ProviderUnavailableResultException {
         Instant lowerBound = executionTime.plus(cronResolver.getDelay());
         Instant upperBound = cronResolver.getNextExecutionWithDelay(executionTime);
 

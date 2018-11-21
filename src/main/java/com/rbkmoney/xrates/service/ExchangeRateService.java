@@ -22,7 +22,7 @@ public class ExchangeRateService {
         return getSourceByType(sourceType).getSourceDataFromInitialTime();
     }
 
-    public SourceData getExchangeRatesBySourceType(Optional<Instant> time, SourceType sourceType) throws ProviderUnavailableResultException, UnknownSourceException {
+    public SourceData getExchangeRatesBySourceType(Instant time, SourceType sourceType) throws ProviderUnavailableResultException, UnknownSourceException {
         return getSourceByType(sourceType).getSourceData(time);
     }
 

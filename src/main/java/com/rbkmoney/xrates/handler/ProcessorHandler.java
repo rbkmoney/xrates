@@ -57,7 +57,7 @@ public class ProcessorHandler extends AbstractProcessorHandler<ExchangeRateData,
 
         Instant upperBound = Instant.parse(change.getCreated().getExchangeRateData().getInterval().getUpperBoundExclusive());
         try {
-            SourceData sourceData = exchangeRateService.getExchangeRatesBySourceType(Optional.of(upperBound), sourceType);
+            SourceData sourceData = exchangeRateService.getExchangeRatesBySourceType(upperBound, sourceType);
 
             return new SignalResultData<>(
                     Collections.singletonList(buildCreatedChange(sourceData)),

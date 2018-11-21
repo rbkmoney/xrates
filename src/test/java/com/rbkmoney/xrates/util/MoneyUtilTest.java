@@ -16,8 +16,6 @@ public class MoneyUtilTest {
         testRateRationalConversion(CurrencyUnit.USD, CurrencyUnit.JPY, new BigDecimal("78.3123"), 666);
         testRateRationalConversion(CurrencyUnit.of("CLF"), CurrencyUnit.JPY, new BigDecimal("78.3123"), 234);
         testRateRationalConversion(CurrencyUnit.JPY, CurrencyUnit.of("CLF"), new BigDecimal("78.3123"), 234);
-
-
     }
 
     private void testRateRationalConversion(CurrencyUnit source, CurrencyUnit destination, BigDecimal rate, int sourceCount) {
