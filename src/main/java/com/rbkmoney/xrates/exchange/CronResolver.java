@@ -41,7 +41,7 @@ public class CronResolver {
     public Instant getNextExecution(Instant time) {
         return executionTime.nextExecution(time.atZone(timezone))
                 .map(zonedTime -> zonedTime.toInstant())
-                .orElse(time);
+                .orElseThrow(IllegalStateException::new);
     }
 
     public Instant getNextExecutionWithDelay(Instant time) {
