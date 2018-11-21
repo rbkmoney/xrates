@@ -1,8 +1,8 @@
-package com.rbkmoney.xrates.exchange.provider.impl.cbr;
+package com.rbkmoney.xrates.exchange.impl.provider.cbr;
 
 import com.rbkmoney.xrates.domain.ExchangeRate;
 import com.rbkmoney.xrates.exception.ProviderUnavailableResultException;
-import com.rbkmoney.xrates.exchange.provider.ExchangeProvider;
+import com.rbkmoney.xrates.exchange.ExchangeProvider;
 import org.joda.money.CurrencyUnit;
 import org.junit.Test;
 import org.springframework.http.MediaType;

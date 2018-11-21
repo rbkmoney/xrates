@@ -1,4 +1,4 @@
-package com.rbkmoney.xrates.exchange.provider.impl.cbr.adapter;
+package com.rbkmoney.xrates.exchange.impl.provider.cbr.adapter;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.time.LocalDate;

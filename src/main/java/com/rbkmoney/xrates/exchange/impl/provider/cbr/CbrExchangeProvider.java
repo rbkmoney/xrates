@@ -1,9 +1,9 @@
-package com.rbkmoney.xrates.exchange.provider.impl.cbr;
+package com.rbkmoney.xrates.exchange.impl.provider.cbr;
 
 import com.rbkmoney.xrates.domain.ExchangeRate;
 import com.rbkmoney.xrates.exception.ProviderUnavailableResultException;
-import com.rbkmoney.xrates.exchange.provider.ExchangeProvider;
-import com.rbkmoney.xrates.exchange.provider.impl.cbr.data.CbrExchangeRateData;
+import com.rbkmoney.xrates.exchange.ExchangeProvider;
+import com.rbkmoney.xrates.exchange.impl.provider.cbr.data.CbrExchangeRateData;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.money.CurrencyUnit;
 import org.springframework.core.NestedRuntimeException;

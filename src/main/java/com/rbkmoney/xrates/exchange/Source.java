@@ -4,7 +4,6 @@ import com.rbkmoney.xrates.domain.ExchangeRate;
 import com.rbkmoney.xrates.domain.SourceData;
 import com.rbkmoney.xrates.domain.SourceType;
 import com.rbkmoney.xrates.exception.ProviderUnavailableResultException;
-import com.rbkmoney.xrates.exchange.provider.ExchangeProvider;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

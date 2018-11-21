@@ -4,7 +4,7 @@ import com.rbkmoney.xrates.domain.SourceType;
 import com.rbkmoney.xrates.exception.ProviderUnavailableResultException;
 import com.rbkmoney.xrates.exchange.CronResolver;
 import com.rbkmoney.xrates.exchange.Source;
-import com.rbkmoney.xrates.exchange.provider.impl.cbr.CbrExchangeProvider;
+import com.rbkmoney.xrates.exchange.impl.provider.cbr.CbrExchangeProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

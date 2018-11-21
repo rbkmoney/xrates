@@ -1,4 +1,4 @@
-package com.rbkmoney.xrates.exchange.provider;
+package com.rbkmoney.xrates.exchange;
 
 import com.rbkmoney.xrates.domain.ExchangeRate;
 import com.rbkmoney.xrates.exception.ProviderUnavailableResultException;

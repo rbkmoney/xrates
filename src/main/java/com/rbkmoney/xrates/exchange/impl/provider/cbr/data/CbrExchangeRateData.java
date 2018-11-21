@@ -1,6 +1,6 @@
-package com.rbkmoney.xrates.exchange.provider.impl.cbr.data;
+package com.rbkmoney.xrates.exchange.impl.provider.cbr.data;
 
-import com.rbkmoney.xrates.exchange.provider.impl.cbr.adapter.CbrLocalDateXmlAdapter;
+import com.rbkmoney.xrates.exchange.impl.provider.cbr.adapter.CbrLocalDateXmlAdapter;
 import lombok.Data;
 import lombok.ToString;
 
