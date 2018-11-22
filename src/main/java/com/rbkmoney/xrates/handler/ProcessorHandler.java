@@ -73,10 +73,10 @@ public class ProcessorHandler extends AbstractProcessorHandler<ExchangeRateData,
     }
 
     private Change getLastEvent(List<TMachineEvent<Change>> tMachineEvents) {
-        if (!tMachineEvents.isEmpty()) {
-            return tMachineEvents.get(tMachineEvents.size() - 1).getData();
+        if (tMachineEvents.isEmpty()) {
+            return null;
         }
-        return null;
+        return tMachineEvents.get(tMachineEvents.size() - 1).getData();
     }
 
 }

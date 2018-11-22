@@ -28,5 +28,4 @@ public class ProcessorEndpoint extends GenericServlet {
         thriftServlet.service(req, res);
     }
 
-
 }
