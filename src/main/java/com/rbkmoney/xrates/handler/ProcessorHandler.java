@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static com.rbkmoney.xrates.util.ProtoUtil.*;
 

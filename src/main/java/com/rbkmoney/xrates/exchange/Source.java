@@ -28,7 +28,7 @@ public class Source {
     }
 
     public SourceData getSourceData(Instant executionTime) throws ProviderUnavailableResultException {
-        Instant lowerBound = executionTime.plus(cronResolver.getDelay());
+        Instant lowerBound = executionTime;
         Instant upperBound = cronResolver.getNextExecutionWithDelay(executionTime);
 
         List<ExchangeRate> rates = exchangeProvider.getExchangeRates(lowerBound);
