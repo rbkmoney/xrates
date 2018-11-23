@@ -51,13 +51,13 @@ public class CbrExchangeProvider implements ExchangeProvider {
 
     @Override
     public List<ExchangeRate> getExchangeRates(Instant time) throws ProviderUnavailableResultException {
-        log.info("Trying to get exchange data from cbr endpoint, url='{}', time='{}'", url, time);
+        log.info("Trying to get exchange rates from cbr endpoint, url='{}', time='{}'", url, time);
         LocalDate date = time.atZone(timezone).toLocalDate();
 
         CbrExchangeRateData cbrExchangeRateData = request(buildUrl(url, date));
-        validateResponse(cbrExchangeRateData, date);
+        validateResponse(cbrExchangeRateData);
 
-        return cbrExchangeRateData.getCurrencies().stream()
+        List<ExchangeRate> exchangeRates = cbrExchangeRateData.getCurrencies().stream()
                 .map(
                         currency -> new ExchangeRate(
                                 CurrencyUnit.of(currency.getCharCode()),
@@ -65,6 +65,8 @@ public class CbrExchangeProvider implements ExchangeProvider {
                                 currency.getValue().divide(BigDecimal.valueOf(currency.getNominal()))
                         )
                 ).collect(Collectors.toList());
+        log.info("Exchange rates from cbr have been retrieved, url='{}', time='{}', exchangeRates='{}'", url, time, exchangeRates);
+        return exchangeRates;
     }
 
     private CbrExchangeRateData request(String url) throws ProviderUnavailableResultException {
@@ -83,11 +85,7 @@ public class CbrExchangeProvider implements ExchangeProvider {
                 .toUriString();
     }
 
-    private void validateResponse(CbrExchangeRateData cbrExchangeRateData, LocalDate expectedDate) throws ProviderUnavailableResultException {
-        if (!expectedDate.equals(cbrExchangeRateData.getDate())) {
-            throw new ProviderUnavailableResultException(String.format("Invalid date in cbr response, expected='%s', actual='%s'", expectedDate, cbrExchangeRateData.getDate()));
-        }
-
+    private void validateResponse(CbrExchangeRateData cbrExchangeRateData) throws ProviderUnavailableResultException {
         if (cbrExchangeRateData.getCurrencies() == null || cbrExchangeRateData.getCurrencies().isEmpty()) {
             throw new ProviderUnavailableResultException("Empty currency list in cbr response");
         }

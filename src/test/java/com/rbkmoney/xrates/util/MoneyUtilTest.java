@@ -24,8 +24,7 @@ public class MoneyUtilTest {
                 new BigFraction(sourceCount)
                         .multiply(rationalMinorRate)
                         .bigDecimalValue()
-                        .movePointRight(source.getDecimalPlaces())
-                        .movePointLeft(destination.getDecimalPlaces())
+                        .movePointRight(source.getDecimalPlaces() - destination.getDecimalPlaces())
         );
     }
 

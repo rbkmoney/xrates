@@ -65,35 +65,6 @@ public class CbrExchangeProviderTest {
     }
 
     @Test(expected = ProviderUnavailableResultException.class)
-    public void testWithInvalidDate() {
-        mockServer.expect(requestTo(CbrExchangeProvider.DEFAULT_ENDPOINT + "?date_req=20/11/2018"))
-                .andRespond(
-                        withSuccess(
-                                "<ValCurs Date=\"19.11.2018\" name=\"Foreign Currency Market\">\n" +
-                                        "<Valute ID=\"R01010\">\n" +
-                                        "<NumCode>036</NumCode>\n" +
-                                        "<CharCode>AUD</CharCode>\n" +
-                                        "<Nominal>1</Nominal>\n" +
-                                        "<Name>Австралийский доллар</Name>\n" +
-                                        "<Value>33.3333</Value>\n" +
-                                        "</Valute>" +
-                                        "</ValCurs>",
-                                MediaType.parseMediaType("application/xml; charset=windows-1251")
-                        )
-                );
-        try {
-            ExchangeProvider exchangeProvider = new CbrExchangeProvider(restTemplate);
-            exchangeProvider.getExchangeRates(
-                    LocalDate.of(2018, 11, 20).atStartOfDay()
-                            .atZone(CbrExchangeProvider.DEFAULT_TIMEZONE)
-                            .toInstant()
-            );
-        } finally {
-            mockServer.verify();
-        }
-    }
-
-    @Test(expected = ProviderUnavailableResultException.class)
     public void testWhenReturnError() {
         LocalDate date = LocalDate.now();
         mockServer.expect(requestTo(buildExpectedUrl(date)))

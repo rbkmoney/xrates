@@ -1,9 +1,8 @@
 package com.rbkmoney.xrates.exception;
 
-public class ProviderUnavailableResultException extends RuntimeException {
+import com.rbkmoney.woody.api.flow.error.WUnavailableResultException;
 
-    public ProviderUnavailableResultException() {
-    }
+public class ProviderUnavailableResultException extends WUnavailableResultException {
 
     public ProviderUnavailableResultException(String message) {
         super(message);
@@ -17,7 +16,4 @@ public class ProviderUnavailableResultException extends RuntimeException {
         super(cause);
     }
 
-    public ProviderUnavailableResultException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

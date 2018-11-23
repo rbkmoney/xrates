@@ -1,9 +1,8 @@
 package com.rbkmoney.xrates.exception;
 
-public class UnknownSourceException extends RuntimeException {
+import com.rbkmoney.woody.api.flow.error.WUndefinedResultException;
 
-    public UnknownSourceException() {
-    }
+public class UnknownSourceException extends WUndefinedResultException {
 
     public UnknownSourceException(String message) {
         super(message);
@@ -17,7 +16,4 @@ public class UnknownSourceException extends RuntimeException {
         super(cause);
     }
 
-    public UnknownSourceException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }
