@@ -1,0 +1,34 @@
+service_name: machinegun
+erlang:
+  cookie: "mg_cookie"
+  ipv6: false
+  disable_dns_cache: false
+woody_server:
+  ip: "::"
+  port: 8022
+  keep_alive_timeout: 60s
+limits:
+  process_heap: 2M
+  disk:
+    path: "/"
+    value: 99%
+  memory:
+    type: cgroups
+    value: 90%
+logging:
+  root: /var/log/machinegun
+  crash_log: crash.log
+  json_log: log.json
+  level: info
+namespaces:
+  rates:
+    event_sink: rates
+    default_processing_timeout: 30s
+    timer_processing_timeout: 60s
+    reschedule_timeout: 60s
+    processor:
+      url: http://host.docker.internal:8022/v1/processor
+      pool_size: 50
+snowflake_machine_id: 1
+storage:
+  type: memory
