@@ -12,12 +12,13 @@
 
     <groupId>com.rbkmoney</groupId>
     <artifactId>xrates</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
 
     <properties>
         <project.maintainer>Pavel Popov &lt;p.popov@rbkmoney.com&gt;</project.maintainer>
-        <shared.resources.version>0.2.1</shared.resources.version>
+        <shared.resources.version>0.3.1</shared.resources.version>
         <server.port>8022</server.port>
+        <exposed.ports>${server.port}</exposed.ports>
         <dockerfile.base.service.tag>22c57470c4fc47161894f036b7cf9d70f42b75f5</dockerfile.base.service.tag>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -82,6 +83,16 @@
             <artifactId>lombok</artifactId>
             <version>1.18.4</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.rbkmoney.logback</groupId>
+            <artifactId>nop-rolling</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>5.0</version>
         </dependency>
         <!-- Test libs -->
         <dependency>
