@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 
 @ServletComponentScan
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.rbkmoney.xrates")
 public class XRatesApplication {
 
     public static void main(String[] args) {
