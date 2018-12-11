@@ -1,16 +1,20 @@
 package com.rbkmoney.xrates.util;
 
+import com.rbkmoney.machinarium.domain.TSinkEvent;
 import com.rbkmoney.machinegun.base.Timer;
 import com.rbkmoney.machinegun.stateproc.*;
 import com.rbkmoney.xrates.base.Rational;
 import com.rbkmoney.xrates.base.TimestampInterval;
 import com.rbkmoney.xrates.domain.ExchangeRate;
 import com.rbkmoney.xrates.domain.SourceData;
+import com.rbkmoney.xrates.rate.Event;
+import com.rbkmoney.xrates.rate.SinkEvent;
 import com.rbkmoney.xrates.rate.*;
 import org.apache.commons.math3.fraction.BigFraction;
 import org.joda.money.CurrencyUnit;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
 public class ProtoUtil {
@@ -65,6 +69,15 @@ public class ProtoUtil {
 
     public static Currency buildCurrency(CurrencyUnit currencyUnit) {
         return new Currency(currencyUnit.getCode(), (short) currencyUnit.getDecimalPlaces());
+    }
+
+    public static SinkEvent toSinkEvent(TSinkEvent<Change> changeTSinkEvent) {
+        return new SinkEvent(
+                changeTSinkEvent.getEvent().getId(),
+                changeTSinkEvent.getEvent().getCreatedAt().toString(),
+                changeTSinkEvent.getSourceId(),
+                new Event(Collections.singletonList(changeTSinkEvent.getEvent().getData()))
+        );
     }
 
 }

@@ -1,8 +1,11 @@
 package com.rbkmoney.xrates.configuration;
 
 import com.rbkmoney.machinarium.client.AutomatonClient;
+import com.rbkmoney.machinarium.client.EventSinkClient;
 import com.rbkmoney.machinarium.client.TBaseAutomatonClient;
+import com.rbkmoney.machinarium.client.TBaseEventSinkClient;
 import com.rbkmoney.machinegun.stateproc.AutomatonSrv;
+import com.rbkmoney.machinegun.stateproc.EventSinkSrv;
 import com.rbkmoney.woody.thrift.impl.http.THSpawnClientBuilder;
 import com.rbkmoney.xrates.domain.SourceType;
 import com.rbkmoney.xrates.exception.ProviderUnavailableResultException;
@@ -68,7 +71,7 @@ public class ApplicationConfig {
 
     @Bean
     public AutomatonSrv.Iface automationThriftClient(
-            @Value("${service.mg.url}") Resource resource,
+            @Value("${service.mg.automaton.url}") Resource resource,
             @Value("${service.mg.networkTimeout}") int networkTimeout
             ) throws IOException {
         return new THSpawnClientBuilder()
@@ -79,10 +82,29 @@ public class ApplicationConfig {
 
     @Bean
     public AutomatonClient<com.rbkmoney.machinegun.msgpack.Value, Change> automatonClient(
-            @Value("${service.mg.namespace}") String namespace,
+            @Value("${service.mg.automaton.namespace}") String namespace,
             AutomatonSrv.Iface automationThriftClient
     ) {
         return new TBaseAutomatonClient<>(automationThriftClient, namespace, Change.class);
+    }
+
+    @Bean
+    public EventSinkSrv.Iface eventSinkThriftClient(
+            @Value("${service.mg.eventSink.url}") Resource resource,
+            @Value("${service.mg.networkTimeout}") int networkTimeout
+    ) throws IOException {
+        return new THSpawnClientBuilder()
+                .withAddress(resource.getURI())
+                .withNetworkTimeout(networkTimeout)
+                .build(EventSinkSrv.Iface.class);
+    }
+
+    @Bean
+    public EventSinkClient<Change> eventSinkClient(
+            @Value("${service.mg.eventSink.sinkId}") String eventSinkId,
+            EventSinkSrv.Iface eventSinkThriftClient
+    ) {
+        return new TBaseEventSinkClient<>(eventSinkThriftClient, eventSinkId, Change.class);
     }
 
 }

@@ -1,9 +1,15 @@
 server.port: @server.port@
+spring.application.name: @project.name@
+management.metrics.export.statsd.flavor: etsy
 service:
   mg:
-    url: http://machinegun:8022/v1/automaton
+    automaton:
+      url: http://machinegun:8022/v1/automaton
+      namespace: rates
+    eventSink:
+      url: http://localhost:8022/v1/event_sink
+      sinkId: rates
     networkTimeout: 5000
-    namespace: rates
 sources:
   needInitialize: true
   cbr:
