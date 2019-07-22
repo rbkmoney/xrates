@@ -13,11 +13,8 @@ import java.util.List;
 public class SourceData {
 
     private final Instant lowerBound;
-
     private final Instant upperBound;
-
     private final Instant nextExecutionTime;
-
     private final List<ExchangeRate> rates;
 
 }
