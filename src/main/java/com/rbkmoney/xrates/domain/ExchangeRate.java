@@ -13,9 +13,7 @@ import java.math.BigDecimal;
 public class ExchangeRate {
 
     private final CurrencyUnit sourceCurrency;
-
     private final CurrencyUnit destinationCurrency;
-
     private final BigDecimal conversionRate;
 
 }
