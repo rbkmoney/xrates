@@ -73,10 +73,11 @@ public class ProtoUtil {
 
     public static SinkEvent toSinkEvent(TSinkEvent<Change> changeTSinkEvent) {
         return new SinkEvent(
-                changeTSinkEvent.getEvent().getId(),
+                changeTSinkEvent.getId(),
                 changeTSinkEvent.getEvent().getCreatedAt().toString(),
                 changeTSinkEvent.getSourceId(),
-                new Event(Collections.singletonList(changeTSinkEvent.getEvent().getData()))
+                new Event(Collections.singletonList(changeTSinkEvent.getEvent().getData())),
+                changeTSinkEvent.getEvent().getId()
         );
     }
 

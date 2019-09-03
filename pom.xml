@@ -12,7 +12,7 @@
 
     <groupId>com.rbkmoney</groupId>
     <artifactId>xrates</artifactId>
-    <version>1.6-SNAPSHOT</version>
+    <version>1.7-SNAPSHOT</version>
 
     <properties>
 
@@ -55,7 +55,7 @@
         <dependency>
             <groupId>com.rbkmoney</groupId>
             <artifactId>xrates-proto</artifactId>
-            <version>1.2-08fd47f</version>
+            <version>1.7-5587fa8</version>
         </dependency>
         <dependency>
             <groupId>com.rbkmoney</groupId>
