@@ -12,7 +12,7 @@
 
     <groupId>com.rbkmoney</groupId>
     <artifactId>xrates</artifactId>
-    <version>1.7-SNAPSHOT</version>
+    <version>1.8-SNAPSHOT</version>
 
     <properties>
 
@@ -60,7 +60,7 @@
         <dependency>
             <groupId>com.rbkmoney</groupId>
             <artifactId>machinarium</artifactId>
-            <version>0.2.5</version>
+            <version>0.2.9</version>
         </dependency>
         <dependency>
             <groupId>com.cronutils</groupId>

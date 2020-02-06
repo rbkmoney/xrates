@@ -2,8 +2,10 @@ package com.rbkmoney.xrates.handler;
 
 import com.rbkmoney.machinarium.domain.CallResultData;
 import com.rbkmoney.machinarium.domain.SignalResultData;
+import com.rbkmoney.machinarium.domain.TMachine;
 import com.rbkmoney.machinarium.domain.TMachineEvent;
 import com.rbkmoney.machinarium.handler.AbstractProcessorHandler;
+import com.rbkmoney.machinegun.msgpack.Nil;
 import com.rbkmoney.machinegun.msgpack.Value;
 import com.rbkmoney.machinegun.stateproc.ComplexAction;
 import com.rbkmoney.xrates.domain.SourceData;
@@ -32,23 +34,31 @@ public class ProcessorHandler extends AbstractProcessorHandler<Value, Change> {
     }
 
     @Override
-    protected SignalResultData<Change> processSignalInit(String namespace, String machineId, Value args) {
-        log.info("Trying to process signal init, namespace='{}', machineId='{}'", namespace, machineId);
+    protected SignalResultData<Change> processSignalInit(TMachine<Change> tMachine,
+                                                         Value value) {
+        String machineId = tMachine.getMachineId();
+        log.info("Trying to process signal init, namespace='{}', machineId='{}'", tMachine.getNs(), machineId);
         SourceType sourceType = getSourceType(machineId);
 
         SourceData sourceData = exchangeRateService.getExchangeRatesBySourceType(sourceType);
 
         SignalResultData<Change> signalResultData = new SignalResultData<>(
+                Value.nl(new Nil()),
                 Collections.singletonList(buildCreatedChange(sourceData)),
                 buildComplexActionWithDeadline(sourceData.getNextExecutionTime(), buildLastEventHistoryRange())
         );
+
         log.info("Response: {}", signalResultData);
         return signalResultData;
     }
 
     @Override
-    protected SignalResultData<Change> processSignalTimeout(String namespace, String machineId, List<TMachineEvent<Change>> tMachineEvents) {
-        log.info("Trying to process signal timeout, namespace='{}', machineId='{}', events='{}'", namespace, machineId, tMachineEvents);
+    protected SignalResultData<Change> processSignalTimeout(TMachine<Change> tMachine,
+                                                            List<TMachineEvent<Change>> tMachineEvents) {
+        String machineId = tMachine.getMachineId();
+
+        log.info("Trying to process signal timeout, namespace='{}', machineId='{}', events='{}'",
+                tMachine.getNs(), machineId, tMachineEvents);
         SourceType sourceType = getSourceType(machineId);
         Change change = getLastEvent(tMachineEvents);
 
@@ -61,6 +71,7 @@ public class ProcessorHandler extends AbstractProcessorHandler<Value, Change> {
         SourceData sourceData = exchangeRateService.getExchangeRatesBySourceType(upperBound, sourceType);
 
         SignalResultData<Change> signalResultData = new SignalResultData<>(
+                Value.nl(new Nil()),
                 Collections.singletonList(buildCreatedChange(sourceData)),
                 buildComplexActionWithDeadline(sourceData.getNextExecutionTime(), buildLastEventHistoryRange())
         );
@@ -69,8 +80,15 @@ public class ProcessorHandler extends AbstractProcessorHandler<Value, Change> {
     }
 
     @Override
-    protected CallResultData<Change> processCall(String namespace, String machineId, Value args, List<TMachineEvent<Change>> tMachineEvents) {
-        return new CallResultData<>(getLastEvent(tMachineEvents), Collections.emptyList(), new ComplexAction());
+    protected CallResultData<Change> processCall(String namespace,
+                                                 String machineId,
+                                                 Value args,
+                                                 List<TMachineEvent<Change>> tMachineEvents) {
+        return new CallResultData<>(
+                Value.nl(new Nil()),
+                getLastEvent(tMachineEvents),
+                Collections.emptyList(),
+                new ComplexAction());
     }
 
     private SourceType getSourceType(String sourceType) throws UnknownSourceException {
