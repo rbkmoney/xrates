@@ -24,6 +24,8 @@ sources:
   psb:
     initialTime: "2020-02-17T21:00:00Z"
     provider:
+      terminalId:
+      secretKey:
       url: https://3ds.payment.ru/cgi-bin/curr_rate_by_date
       timezone: Europe/Moscow
     cron:
