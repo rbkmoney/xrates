@@ -89,7 +89,7 @@ public class ApplicationConfig {
             PsbExchangeProvider psbExchangeProvider,
             @Value("${sources.psb.cron.value}") String cron,
             @Value("${sources.psb.cron.timezone}") ZoneId timezone,
-            @Value("${sources.cbr.cron.delay}") Duration delay,
+            @Value("${sources.psb.cron.delay}") Duration delay,
             @Value("${sources.psb.initialTime}") String initialTime
     ) {
         CronResolver cronResolver = new CronResolver(cron, timezone, delay);
