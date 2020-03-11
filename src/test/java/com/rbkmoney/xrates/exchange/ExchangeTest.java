@@ -4,7 +4,9 @@ import com.rbkmoney.xrates.domain.SourceData;
 import com.rbkmoney.xrates.domain.SourceType;
 import org.junit.Test;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
@@ -19,7 +21,7 @@ public class ExchangeTest {
 
         Source source = new Source(
                 time -> Collections.emptyList(),
-                new CronResolver("00 00 * * *", "Europe/Moscow", 500),
+                new CronResolver("00 00 * * *", ZoneId.of("Europe/Moscow"), Duration.ofMillis(500)),
                 initialTime,
                 SourceType.CBR
         );

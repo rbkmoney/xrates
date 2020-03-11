@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CbrExchangeProvider implements ExchangeProvider {
 
-    public static final String DEFAULT_ENDPOINT = "http://www.cbr.ru/scripts/XML_daily.asp";
+    public static final String DEFAULT_ENDPOINT = "https://www.cbr.ru/scripts/XML_daily.asp";
 
     public static final ZoneId DEFAULT_TIMEZONE = ZoneId.of("Europe/Moscow");
 
