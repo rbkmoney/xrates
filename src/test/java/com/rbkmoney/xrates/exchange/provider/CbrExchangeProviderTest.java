@@ -62,7 +62,7 @@ public class CbrExchangeProviderTest {
         assertEquals(CurrencyUnit.of(currencyCode), exchangeRate.getSourceCurrency());
         assertEquals(CbrExchangeProvider.DESTINATION_CURRENCY_UNIT, exchangeRate.getDestinationCurrency());
         assertEquals(new BigDecimal(valueString), exchangeRate.getConversionRate());
-        assertNull(exchangeRate.getPaymentSystem());
+        assertEquals(PaymentSystem.UNKNOWN, exchangeRate.getPaymentSystem());
 
         mockServer.verify();
     }
