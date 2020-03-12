@@ -67,6 +67,7 @@ public class PsbExchangeProviderTest {
             assertTrue(expectedSourceCurrencies.contains(exchangeRate.getSourceCurrency()));
             assertEquals(PsbExchangeProvider.DESTINATION_CURRENCY_UNIT, exchangeRate.getDestinationCurrency());
             assertNotNull(exchangeRate.getConversionRate());
+            assertNotNull(exchangeRate.getPaymentSystem());
         });
 
         mockServer.verify();

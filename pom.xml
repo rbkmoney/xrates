@@ -55,7 +55,7 @@
         <dependency>
             <groupId>com.rbkmoney</groupId>
             <artifactId>xrates-proto</artifactId>
-            <version>1.7-5587fa8</version>
+            <version>1.8-67d5c21</version>
         </dependency>
         <dependency>
             <groupId>com.rbkmoney</groupId>

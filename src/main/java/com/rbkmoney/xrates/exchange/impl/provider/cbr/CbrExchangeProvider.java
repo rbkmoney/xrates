@@ -1,6 +1,7 @@
 package com.rbkmoney.xrates.exchange.impl.provider.cbr;
 
 import com.rbkmoney.xrates.domain.ExchangeRate;
+import com.rbkmoney.xrates.domain.PaymentSystem;
 import com.rbkmoney.xrates.exception.ProviderUnavailableResultException;
 import com.rbkmoney.xrates.exchange.ExchangeProvider;
 import com.rbkmoney.xrates.exchange.impl.provider.cbr.data.CbrExchangeRateData;
@@ -62,7 +63,8 @@ public class CbrExchangeProvider implements ExchangeProvider {
                         currency -> new ExchangeRate(
                                 CurrencyUnit.of(currency.getCharCode()),
                                 DESTINATION_CURRENCY_UNIT,
-                                currency.getValue().divide(BigDecimal.valueOf(currency.getNominal()))
+                                currency.getValue().divide(BigDecimal.valueOf(currency.getNominal())),
+                                PaymentSystem.UNKNOWN
                         )
                 ).collect(Collectors.toList());
         log.info("Exchange rates from cbr have been retrieved, url='{}', time='{}', exchangeRates='{}'", url, time, exchangeRates);

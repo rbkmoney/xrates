@@ -2,6 +2,7 @@ package com.rbkmoney.xrates.exchange.impl.provider.psb;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rbkmoney.xrates.domain.ExchangeRate;
+import com.rbkmoney.xrates.domain.PaymentSystem;
 import com.rbkmoney.xrates.exception.ProviderUnavailableResultException;
 import com.rbkmoney.xrates.exchange.ExchangeProvider;
 import com.rbkmoney.xrates.exchange.impl.provider.psb.data.PsbExchangeRootData;
@@ -80,7 +81,8 @@ public class PsbExchangeProvider implements ExchangeProvider {
                 .map(currency -> new ExchangeRate(
                         CurrencyUnit.of(currency.getCurrencyCode()),
                         DESTINATION_CURRENCY_UNIT,
-                        currency.getValue()
+                        currency.getValue(),
+                        PaymentSystem.findByName(currency.getIps())
                 )).collect(Collectors.toList());
 
         log.info("Exchange rates from psb have been retrieved, url='{}', time='{}', exchangeRates='{}'", url, time, exchangeRates);
