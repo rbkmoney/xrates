@@ -11,6 +11,7 @@ import lombok.Getter;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.time.chrono.ChronoZonedDateTime;
 
 @Getter
 public class CronResolver {
@@ -27,8 +28,8 @@ public class CronResolver {
 
     private final Duration delay;
 
-    public CronResolver(String cron, String timezone, int delayMs) {
-        this(CRON_PARSER.parse(cron), ZoneId.of(timezone), Duration.ofMillis(delayMs));
+    public CronResolver(String cron, ZoneId timezone, Duration delay) {
+        this(CRON_PARSER.parse(cron), timezone, delay);
     }
 
     public CronResolver(Cron cron, ZoneId timezone, Duration delay) {
@@ -40,7 +41,7 @@ public class CronResolver {
 
     public Instant getNextExecution(Instant time) {
         return executionTime.nextExecution(time.atZone(timezone))
-                .map(zonedTime -> zonedTime.toInstant())
+                .map(ChronoZonedDateTime::toInstant)
                 .orElseThrow(IllegalStateException::new);
     }
 

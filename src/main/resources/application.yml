@@ -15,10 +15,20 @@ sources:
   cbr:
     initialTime: "2016-12-31T21:00:00Z"
     provider:
-      url: http://www.cbr.ru/scripts/XML_daily.asp
+      url: https://www.cbr.ru/scripts/XML_daily.asp
       timezone: Europe/Moscow
     cron:
       value: "00 21 * * *"
       timezone: Europe/Moscow
-      delayMs: 10800000 # 3 hours
-
+      delay: PT3H
+  psb:
+    initialTime: "2020-02-17T21:00:00Z"
+    provider:
+      terminalId:
+      secretKey:
+      url: https://3ds.payment.ru/cgi-bin/curr_rate_by_date
+      timezone: Europe/Moscow
+    cron:
+      value: "00 21 * * *"
+      timezone: Europe/Moscow
+      delay: PT3H
