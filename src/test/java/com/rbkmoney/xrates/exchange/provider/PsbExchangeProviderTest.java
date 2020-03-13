@@ -3,6 +3,7 @@ package com.rbkmoney.xrates.exchange.provider;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rbkmoney.xrates.domain.ExchangeRate;
+import com.rbkmoney.xrates.domain.PaymentSystem;
 import com.rbkmoney.xrates.exception.ProviderUnavailableResultException;
 import com.rbkmoney.xrates.exchange.ExchangeProvider;
 import com.rbkmoney.xrates.exchange.impl.provider.cbr.CbrExchangeProvider;
@@ -68,6 +69,7 @@ public class PsbExchangeProviderTest {
             assertEquals(PsbExchangeProvider.DESTINATION_CURRENCY_UNIT, exchangeRate.getDestinationCurrency());
             assertNotNull(exchangeRate.getConversionRate());
             assertNotNull(exchangeRate.getPaymentSystem());
+            assertNotEquals(PaymentSystem.UNKNOWN, exchangeRate.getPaymentSystem());
         });
 
         mockServer.verify();

@@ -16,7 +16,6 @@ import org.joda.money.CurrencyUnit;
 
 import java.time.Instant;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ProtoUtil {
