@@ -5,6 +5,7 @@ import com.rbkmoney.machinegun.base.Timer;
 import com.rbkmoney.machinegun.stateproc.*;
 import com.rbkmoney.xrates.base.Rational;
 import com.rbkmoney.xrates.base.TimestampInterval;
+import com.rbkmoney.xrates.domain.BankCardPaymentSystem;
 import com.rbkmoney.xrates.domain.ExchangeRate;
 import com.rbkmoney.xrates.domain.SourceData;
 import com.rbkmoney.xrates.rate.Event;
@@ -51,6 +52,8 @@ public class ProtoUtil {
                                 buildCurrency(exchangeRate.getSourceCurrency()),
                                 buildCurrency(exchangeRate.getDestinationCurrency()),
                                 buildExchangeRate(exchangeRate)
+                        ).setPaymentSystem(
+                                BankCardPaymentSystem.findByValue(exchangeRate.getPaymentSystem().getCode())
                         )
                 ).collect(Collectors.toList())
         );
