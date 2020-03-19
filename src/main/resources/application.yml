@@ -29,6 +29,6 @@ sources:
       url: https://3ds.payment.ru/cgi-bin/curr_rate_by_date
       timezone: Europe/Moscow
     cron:
-      value: "00 21 * * *"
+      value: "00 01 * * *"
       timezone: Europe/Moscow
-      delay: PT3H
+      delay: PT-1H
