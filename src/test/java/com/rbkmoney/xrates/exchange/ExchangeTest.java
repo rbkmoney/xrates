@@ -16,20 +16,48 @@ public class ExchangeTest {
 
     @Test
     public void testCheckBoundsInSourceDataWithInitialTime() {
-        Instant initialTime = Instant.parse("2018-11-21T21:00:00.000Z");
-        int delay = 500;
+        Instant initialTime = Instant.parse("2016-12-31T21:00:00.000Z");
+        Duration delay = Duration.ofHours(3);
 
         Source source = new Source(
                 time -> Collections.emptyList(),
-                new CronResolver("00 00 * * *", ZoneId.of("Europe/Moscow"), Duration.ofMillis(500)),
+                new CronResolver("00 21 * * *", ZoneId.of("Europe/Moscow"), delay),
                 initialTime,
                 SourceType.CBR
         );
 
         SourceData sourceData = source.getSourceDataFromInitialTime();
-        assertEquals(sourceData.getNextExecutionTime().plusMillis(delay), sourceData.getUpperBound());
+        assertEquals(sourceData.getNextExecutionTime().plus(delay), sourceData.getUpperBound());
         assertEquals(initialTime, sourceData.getLowerBound());
         assertTrue(sourceData.getRates().isEmpty());
+
+        SourceData nextSourceData = source.getSourceData(sourceData.getNextExecutionTime());
+        assertEquals(sourceData.getUpperBound(), nextSourceData.getLowerBound());
+        assertEquals(nextSourceData.getUpperBound(), nextSourceData.getNextExecutionTime().plus(delay));
+        assertTrue(nextSourceData.getRates().isEmpty());
+    }
+
+    @Test
+    public void testCheckBoundsInSourceDataWithInitialTimeAndInvertDelay() {
+        Instant initialTime = Instant.parse("2020-02-17T21:00:00.000Z");
+        Duration delay = Duration.ofHours(-1);
+
+        Source source = new Source(
+                time -> Collections.emptyList(),
+                new CronResolver("00 01 * * *", ZoneId.of("Europe/Moscow"), delay),
+                initialTime,
+                SourceType.CBR
+        );
+
+        SourceData sourceData = source.getSourceDataFromInitialTime();
+        assertEquals(sourceData.getNextExecutionTime().plus(delay), sourceData.getUpperBound());
+        assertEquals(initialTime, sourceData.getLowerBound());
+        assertTrue(sourceData.getRates().isEmpty());
+
+        SourceData nextSourceData = source.getSourceData(sourceData.getNextExecutionTime());
+        assertEquals(sourceData.getUpperBound(), nextSourceData.getLowerBound());
+        assertEquals(nextSourceData.getUpperBound(), nextSourceData.getNextExecutionTime().plus(delay));
+        assertTrue(nextSourceData.getRates().isEmpty());
     }
 
 }

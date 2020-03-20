@@ -23,11 +23,15 @@ public class Source {
     private final SourceType sourceType;
 
     public SourceData getSourceDataFromInitialTime() throws ProviderUnavailableResultException {
-        return getSourceData(initialTime);
+        Instant executionTime = cronResolver.getLastExecution(initialTime);
+        if (cronResolver.getExecutionWithDelay(executionTime).isBefore(initialTime)) {
+            executionTime = cronResolver.getNextExecution(initialTime);
+        }
+        return getSourceData(executionTime);
     }
 
     public SourceData getSourceData(Instant executionTime) throws ProviderUnavailableResultException {
-        Instant lowerBound = executionTime;
+        Instant lowerBound = cronResolver.getExecutionWithDelay(executionTime);
         Instant upperBound = cronResolver.getNextExecutionWithDelay(executionTime);
 
         List<ExchangeRate> rates = exchangeProvider.getExchangeRates(lowerBound);

@@ -3,7 +3,6 @@ package com.rbkmoney.xrates.service;
 import com.rbkmoney.machinarium.client.AutomatonClient;
 import com.rbkmoney.machinarium.exception.MachineAlreadyExistsException;
 import com.rbkmoney.machinegun.msgpack.Value;
-import com.rbkmoney.xrates.domain.SourceType;
 import com.rbkmoney.xrates.rate.Change;
 import org.junit.Test;
 import org.junit.runner.RunWith;

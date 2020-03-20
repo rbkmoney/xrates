@@ -45,10 +45,20 @@ public class CronResolver {
                 .orElseThrow(IllegalStateException::new);
     }
 
+    public Instant getLastExecution(Instant time) {
+        return executionTime.lastExecution(time.atZone(timezone))
+                .map(ChronoZonedDateTime::toInstant)
+                .orElseThrow(IllegalStateException::new);
+    }
+
     public Instant getNextExecutionWithDelay(Instant time) {
         return executionTime.nextExecution(time.atZone(timezone))
                 .map(zonedTime -> zonedTime.plus(delay).toInstant())
                 .orElseThrow(IllegalStateException::new);
+    }
+
+    public Instant getExecutionWithDelay(Instant time) {
+        return time.plus(delay);
     }
 
 }
