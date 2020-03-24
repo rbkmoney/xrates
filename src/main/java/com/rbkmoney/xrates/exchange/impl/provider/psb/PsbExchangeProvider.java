@@ -33,13 +33,9 @@ public class PsbExchangeProvider implements ExchangeProvider {
     public static final String DEFAULT_ENDPOINT = "https://3ds.payment.ru/cgi-bin/curr_rate_by_date";
 
     public static final ZoneId DEFAULT_TIMEZONE = ZoneId.of("Europe/Moscow");
-
-    private static final String HMAC_SHA1_ALGORITHM = "HmacSHA1";
-
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
-
     public static final CurrencyUnit DESTINATION_CURRENCY_UNIT = CurrencyUnit.of("RUB");
-
+    private static final String HMAC_SHA1_ALGORITHM = "HmacSHA1";
     private final String url;
 
     private final ZoneId timezone;
