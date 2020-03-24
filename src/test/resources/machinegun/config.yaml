@@ -1,34 +1,66 @@
 service_name: machinegun
+
+# Name of the node for Erlang distribution.
+#
+# Defaults to: '{service_name}@{primary_netif_ip}'.
+# dist_node_name: machinegun@10.0.0.42
+
+# Erlang VM options.
 erlang:
-  cookie: "mg_cookie"
+  # Path to a file which holds Erlang distribution cookie.
+  # The cookie is _sensitive_ piece of information so handle it with caution.
+  #
+  # Must be set, there's no default.
+  secret_cookie_file: "/opt/machinegun/etc/config/cookie"
   ipv6: false
   disable_dns_cache: false
+
+# API server options.
 woody_server:
   ip: "::"
   port: 8022
   keep_alive_timeout: 60s
 limits:
-  process_heap: 2M
-  disk:
+  process_heap: 2M # heap limit
+  disk: # uses only for health check
     path: "/"
     value: 99%
-  memory:
-    type: cgroups
+  memory: # return 503 if breaks
+    type: cgroups  # cgroups | total
     value: 90%
+  scheduler_tasks: 5000
 logging:
   root: /var/log/machinegun
-  crash_log: crash.log
+  burst_limit_enable: false
+  sync_mode_qlen:  100
+  drop_mode_qlen: 1000
+  flush_qlen: 2000
   json_log: log.json
   level: info
 namespaces:
   rates:
-    event_sink: rates
+    event_sinks:
+      machine:
+        type: machine
+        machine_id: rates
     default_processing_timeout: 30s
     timer_processing_timeout: 60s
     reschedule_timeout: 60s
+    hibernate_timeout: 5s
+    unload_timeout: 60s
     processor:
       url: http://host.docker.internal:8022/v1/processor
       pool_size: 50
+      http_keep_alive_timeout: 10s
+    timers:
+      scan_interval: 30s
+      scan_limit: 1000
+      capacity: 500
+    overseer: disabled
+    # maximum number of events that will be stored inside of machine state
+    # must be non negative integer, default is 0
+    event_stash_size: 5
 snowflake_machine_id: 1
+# memory storage backend
 storage:
   type: memory

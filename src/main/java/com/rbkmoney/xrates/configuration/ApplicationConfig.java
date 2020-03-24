@@ -81,7 +81,7 @@ public class ApplicationConfig {
             RestTemplate restTemplate,
             ObjectMapper objectMapper
     ) {
-        return new PsbExchangeProvider(url, timezone, terminalId, secretKey,  restTemplate, objectMapper);
+        return new PsbExchangeProvider(url, timezone, terminalId, secretKey, restTemplate, objectMapper);
     }
 
     @Bean
@@ -100,7 +100,7 @@ public class ApplicationConfig {
     public AutomatonSrv.Iface automationThriftClient(
             @Value("${service.mg.automaton.url}") Resource resource,
             @Value("${service.mg.networkTimeout}") int networkTimeout
-            ) throws IOException {
+    ) throws IOException {
         return new THSpawnClientBuilder()
                 .withAddress(resource.getURI())
                 .withNetworkTimeout(networkTimeout)

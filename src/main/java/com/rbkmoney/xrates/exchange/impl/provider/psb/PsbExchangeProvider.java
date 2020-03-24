@@ -9,6 +9,7 @@ import com.rbkmoney.xrates.exchange.impl.provider.psb.data.PsbExchangeRootData;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.HmacAlgorithms;
 import org.joda.money.CurrencyUnit;
 import org.springframework.core.NestedRuntimeException;
 import org.springframework.web.client.RestTemplate;
@@ -33,8 +34,6 @@ public class PsbExchangeProvider implements ExchangeProvider {
     public static final String DEFAULT_ENDPOINT = "https://3ds.payment.ru/cgi-bin/curr_rate_by_date";
 
     public static final ZoneId DEFAULT_TIMEZONE = ZoneId.of("Europe/Moscow");
-
-    private static final String HMAC_SHA1_ALGORITHM = "HmacSHA1";
 
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
@@ -109,8 +108,8 @@ public class PsbExchangeProvider implements ExchangeProvider {
 
     private String buildSign(String terminalId, String date, String secretKey) {
         try {
-            SecretKeySpec keySpec = new SecretKeySpec(Hex.decodeHex(secretKey), HMAC_SHA1_ALGORITHM);
-            Mac mac = Mac.getInstance(HMAC_SHA1_ALGORITHM);
+            SecretKeySpec keySpec = new SecretKeySpec(Hex.decodeHex(secretKey), HmacAlgorithms.HMAC_SHA_1.getName());
+            Mac mac = Mac.getInstance(HmacAlgorithms.HMAC_SHA_1.getName());
             mac.init(keySpec);
 
             return Hex.encodeHexString(

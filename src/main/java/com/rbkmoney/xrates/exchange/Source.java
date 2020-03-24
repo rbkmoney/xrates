@@ -23,14 +23,15 @@ public class Source {
     private final SourceType sourceType;
 
     public SourceData getSourceDataFromInitialTime() throws ProviderUnavailableResultException {
-        Instant executionTime = cronResolver.getLastExecution(initialTime);
-        if (cronResolver.getExecutionWithDelay(executionTime).isBefore(initialTime)) {
-            executionTime = cronResolver.getNextExecution(initialTime);
-        }
-        return getSourceData(executionTime);
+        return getSourceData(initialTime);
     }
 
-    public SourceData getSourceData(Instant executionTime) throws ProviderUnavailableResultException {
+    public SourceData getSourceData(Instant prevUpperBound) throws ProviderUnavailableResultException {
+        Instant executionTime = cronResolver.getLastExecution(prevUpperBound);
+        if (cronResolver.getExecutionWithDelay(executionTime).isBefore(prevUpperBound)) {
+            executionTime = cronResolver.getNextExecution(prevUpperBound);
+        }
+
         Instant lowerBound = cronResolver.getExecutionWithDelay(executionTime);
         Instant upperBound = cronResolver.getNextExecutionWithDelay(executionTime);
 

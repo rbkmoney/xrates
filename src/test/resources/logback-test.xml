@@ -8,7 +8,7 @@
     </root>
 
     <logger name="com.rbkmoney.xrates">
-        <level value="debug" />
+        <level value="debug"/>
     </logger>
 
 </configuration>

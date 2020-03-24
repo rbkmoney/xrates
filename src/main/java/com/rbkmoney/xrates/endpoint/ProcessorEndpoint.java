@@ -3,7 +3,6 @@ package com.rbkmoney.xrates.endpoint;
 import com.rbkmoney.machinegun.stateproc.ProcessorSrv;
 import com.rbkmoney.woody.thrift.impl.http.THServiceBuilder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
@@ -13,9 +12,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ProcessorEndpoint extends GenericServlet {
 
-    private Servlet thriftServlet;
-
     private final ProcessorSrv.Iface processorHandler;
+    private Servlet thriftServlet;
 
     @Override
     public void init(ServletConfig config) throws ServletException {

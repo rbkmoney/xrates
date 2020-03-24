@@ -10,14 +10,14 @@ public class MoneyUtil {
 
     /**
      * Convert exchange rate to rational number, describing the exchange rate in minor units.
-     *
+     * <p>
      * For example, we convert CLF to RUB at the exchange rate of 2640.4546 rubles.
      * The source of the currency is CLF with exponent 4, the destination currency is RUB with exponent 2.
      * The minor CLF unit will be equal to 0.26404546 of ruble, or 26.404546 of its minor unit.
      * As a result, in a rational representation, this will be equal to "26404546/1000000" or "13202273/500000".
      *
-     * @param source - source currency
-     * @param destination - destination currency
+     * @param source       - source currency
+     * @param destination  - destination currency
      * @param exchangeRate - rate at which source currency will be exchanged for destination currency
      * @return rational number
      */
