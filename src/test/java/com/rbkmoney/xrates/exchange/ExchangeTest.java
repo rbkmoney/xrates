@@ -31,7 +31,7 @@ public class ExchangeTest {
         assertEquals(initialTime, sourceData.getLowerBound());
         assertTrue(sourceData.getRates().isEmpty());
 
-        SourceData nextSourceData = source.getSourceData(sourceData.getNextExecutionTime());
+        SourceData nextSourceData = source.getSourceData(sourceData.getUpperBound());
         assertEquals(sourceData.getUpperBound(), nextSourceData.getLowerBound());
         assertEquals(nextSourceData.getUpperBound(), nextSourceData.getNextExecutionTime().plus(delay));
         assertTrue(nextSourceData.getRates().isEmpty());
@@ -54,7 +54,7 @@ public class ExchangeTest {
         assertEquals(initialTime, sourceData.getLowerBound());
         assertTrue(sourceData.getRates().isEmpty());
 
-        SourceData nextSourceData = source.getSourceData(sourceData.getNextExecutionTime());
+        SourceData nextSourceData = source.getSourceData(sourceData.getUpperBound());
         assertEquals(sourceData.getUpperBound(), nextSourceData.getLowerBound());
         assertEquals(nextSourceData.getUpperBound(), nextSourceData.getNextExecutionTime().plus(delay));
         assertTrue(nextSourceData.getRates().isEmpty());
