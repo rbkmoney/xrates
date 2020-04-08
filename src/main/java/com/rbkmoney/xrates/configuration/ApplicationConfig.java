@@ -79,7 +79,7 @@ public class ApplicationConfig {
             @Value("${sources.psb-mastercard.provider.timezone}") ZoneId timezone,
             @Value("${sources.psb-mastercard.provider.terminalId}") String terminalId,
             @Value("${sources.psb-mastercard.provider.secretKey}") String secretKey,
-            @Value("${sources.psb-mastercard.provider.secretKey}") PsbPaymentSystem paymentSystem,
+            @Value("${sources.psb-mastercard.provider.paymentSystem}") PsbPaymentSystem paymentSystem,
             RestTemplate restTemplate,
             ObjectMapper objectMapper
     ) {
@@ -105,7 +105,7 @@ public class ApplicationConfig {
             @Value("${sources.psb-visa.provider.timezone}") ZoneId timezone,
             @Value("${sources.psb-visa.provider.terminalId}") String terminalId,
             @Value("${sources.psb-visa.provider.secretKey}") String secretKey,
-            @Value("${sources.psb-visa.provider.secretKey}") PsbPaymentSystem paymentSystem,
+            @Value("${sources.psb-visa.provider.paymentSystem}") PsbPaymentSystem paymentSystem,
             RestTemplate restTemplate,
             ObjectMapper objectMapper
     ) {
