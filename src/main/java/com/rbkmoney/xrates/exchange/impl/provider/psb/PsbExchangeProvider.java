@@ -2,10 +2,10 @@ package com.rbkmoney.xrates.exchange.impl.provider.psb;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rbkmoney.xrates.domain.ExchangeRate;
-import com.rbkmoney.xrates.domain.PaymentSystem;
 import com.rbkmoney.xrates.exception.ProviderUnavailableResultException;
 import com.rbkmoney.xrates.exchange.ExchangeProvider;
 import com.rbkmoney.xrates.exchange.impl.provider.psb.data.PsbExchangeRootData;
+import com.rbkmoney.xrates.exchange.impl.provider.psb.data.PsbPaymentSystem;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
@@ -47,29 +47,32 @@ public class PsbExchangeProvider implements ExchangeProvider {
 
     private final String secretKey;
 
+    private final PsbPaymentSystem psbPaymentSystem;
+
     private final RestTemplate restTemplate;
 
     private final ObjectMapper objectMapper;
 
-    public PsbExchangeProvider(String terminalId, String secretKey, RestTemplate restTemplate, ObjectMapper objectMapper) {
-        this(DEFAULT_ENDPOINT, terminalId, secretKey, restTemplate, objectMapper);
+    public PsbExchangeProvider(String terminalId, String secretKey, PsbPaymentSystem psbPaymentSystem, RestTemplate restTemplate, ObjectMapper objectMapper) {
+        this(DEFAULT_ENDPOINT, terminalId, secretKey, psbPaymentSystem, restTemplate, objectMapper);
     }
 
-    public PsbExchangeProvider(String url, String terminalId, String secretKey, RestTemplate restTemplate, ObjectMapper objectMapper) {
-        this(url, DEFAULT_TIMEZONE, terminalId, secretKey, restTemplate, objectMapper);
+    public PsbExchangeProvider(String url, String terminalId, String secretKey, PsbPaymentSystem psbPaymentSystem, RestTemplate restTemplate, ObjectMapper objectMapper) {
+        this(url, DEFAULT_TIMEZONE, terminalId, secretKey, psbPaymentSystem, restTemplate, objectMapper);
     }
 
-    public PsbExchangeProvider(String url, ZoneId timezone, String terminalId, String secretKey, RestTemplate restTemplate, ObjectMapper objectMapper) {
+    public PsbExchangeProvider(String url, ZoneId timezone, String terminalId, String secretKey, PsbPaymentSystem psbPaymentSystem, RestTemplate restTemplate, ObjectMapper objectMapper) {
         this.url = url;
         this.timezone = timezone;
         this.terminalId = terminalId;
         this.secretKey = secretKey;
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
+        this.psbPaymentSystem = psbPaymentSystem;
     }
 
     @Override
-    public List<ExchangeRate> getExchangeRates(Instant time) throws ProviderUnavailableResultException {
+    public List<ExchangeRate> getExchangeRates(Instant time) {
         log.info("Trying to get exchange rates from psb endpoint, url='{}', time='{}'", url, time);
         LocalDate date = time.atZone(timezone).toLocalDate();
 
@@ -77,18 +80,18 @@ public class PsbExchangeProvider implements ExchangeProvider {
         validateResponse(psbExchangeRootData);
 
         List<ExchangeRate> exchangeRates = psbExchangeRootData.getRates().stream()
+                .filter(currency -> psbPaymentSystem.getValue().equals(currency.getIps()))
                 .map(currency -> new ExchangeRate(
                         CurrencyUnit.of(currency.getCurrencyCode()),
                         DESTINATION_CURRENCY_UNIT,
-                        currency.getValue(),
-                        PaymentSystem.findByName(currency.getIps())
+                        currency.getValue()
                 )).collect(Collectors.toList());
 
         log.info("Exchange rates from psb have been retrieved, url='{}', time='{}', exchangeRates='{}'", url, time, exchangeRates);
         return exchangeRates;
     }
 
-    private PsbExchangeRootData request(String url) throws ProviderUnavailableResultException {
+    private PsbExchangeRootData request(String url) {
         try {
             return objectMapper.readValue(restTemplate.getForObject(url, String.class), PsbExchangeRootData.class);
         } catch (IOException | NestedRuntimeException ex) {
@@ -129,7 +132,7 @@ public class PsbExchangeProvider implements ExchangeProvider {
         return sb.toString();
     }
 
-    private void validateResponse(PsbExchangeRootData psbExchangeRootData) throws ProviderUnavailableResultException {
+    private void validateResponse(PsbExchangeRootData psbExchangeRootData) {
         if (psbExchangeRootData.hasError()) {
             throw new ProviderUnavailableResultException(String.format("Error in psb response, error='%s'", psbExchangeRootData.getError()));
         }

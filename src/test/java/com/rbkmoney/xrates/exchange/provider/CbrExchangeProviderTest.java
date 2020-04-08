@@ -1,7 +1,6 @@
 package com.rbkmoney.xrates.exchange.provider;
 
 import com.rbkmoney.xrates.domain.ExchangeRate;
-import com.rbkmoney.xrates.domain.PaymentSystem;
 import com.rbkmoney.xrates.exception.ProviderUnavailableResultException;
 import com.rbkmoney.xrates.exchange.ExchangeProvider;
 import com.rbkmoney.xrates.exchange.impl.provider.cbr.CbrExchangeProvider;
@@ -61,7 +60,6 @@ public class CbrExchangeProviderTest {
         assertEquals(CurrencyUnit.of(currencyCode), exchangeRate.getSourceCurrency());
         assertEquals(CbrExchangeProvider.DESTINATION_CURRENCY_UNIT, exchangeRate.getDestinationCurrency());
         assertEquals(new BigDecimal(valueString), exchangeRate.getConversionRate());
-        assertEquals(PaymentSystem.UNKNOWN, exchangeRate.getPaymentSystem());
 
         mockServer.verify();
     }

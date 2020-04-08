@@ -38,7 +38,7 @@ logging:
   json_log: log.json
   level: info
 namespaces:
-  rates:
+  xrates:
     event_sinks:
       machine:
         type: machine

@@ -3,11 +3,11 @@ package com.rbkmoney.xrates.exchange.provider;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rbkmoney.xrates.domain.ExchangeRate;
-import com.rbkmoney.xrates.domain.PaymentSystem;
 import com.rbkmoney.xrates.exception.ProviderUnavailableResultException;
 import com.rbkmoney.xrates.exchange.ExchangeProvider;
 import com.rbkmoney.xrates.exchange.impl.provider.cbr.CbrExchangeProvider;
 import com.rbkmoney.xrates.exchange.impl.provider.psb.PsbExchangeProvider;
+import com.rbkmoney.xrates.exchange.impl.provider.psb.data.PsbPaymentSystem;
 import org.joda.money.CurrencyUnit;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -56,20 +56,18 @@ public class PsbExchangeProviderTest {
                 )
         );
 
-        ExchangeProvider exchangeProvider = new PsbExchangeProvider(terminalId, secretKey, restTemplate, mapper);
+        ExchangeProvider exchangeProvider = new PsbExchangeProvider(terminalId, secretKey, PsbPaymentSystem.MASTERCARD, restTemplate, mapper);
         List<ExchangeRate> exchangeRates = exchangeProvider.getExchangeRates(
                 date.atStartOfDay()
                         .atZone(CbrExchangeProvider.DEFAULT_TIMEZONE)
                         .toInstant()
         );
-        assertEquals(4, exchangeRates.size());
+        assertEquals(2, exchangeRates.size());
         List<CurrencyUnit> expectedSourceCurrencies = List.of(CurrencyUnit.USD, CurrencyUnit.EUR);
         exchangeRates.forEach(exchangeRate -> {
             assertTrue(expectedSourceCurrencies.contains(exchangeRate.getSourceCurrency()));
             assertEquals(PsbExchangeProvider.DESTINATION_CURRENCY_UNIT, exchangeRate.getDestinationCurrency());
             assertNotNull(exchangeRate.getConversionRate());
-            assertNotNull(exchangeRate.getPaymentSystem());
-            assertNotEquals(PaymentSystem.UNKNOWN, exchangeRate.getPaymentSystem());
         });
 
         mockServer.verify();
@@ -81,7 +79,7 @@ public class PsbExchangeProviderTest {
                 .expect(anything())
                 .andRespond(withSuccess("{'ERROR':'TERMINAL IS NULL'}", MediaType.parseMediaType("text/plain; charset=UTF-8")));
 
-        ExchangeProvider exchangeProvider = new PsbExchangeProvider("terminalId", "secretKey", restTemplate, mapper);
+        ExchangeProvider exchangeProvider = new PsbExchangeProvider("terminalId", "secretKey", PsbPaymentSystem.MASTERCARD, restTemplate, mapper);
         exchangeProvider.getExchangeRates(Instant.now());
     }
 
@@ -91,7 +89,7 @@ public class PsbExchangeProviderTest {
                 .expect(anything())
                 .andRespond(withSuccess("{'rates':[]}", MediaType.parseMediaType("text/plain; charset=UTF-8")));
 
-        ExchangeProvider exchangeProvider = new PsbExchangeProvider("terminalId", "secretKey", restTemplate, mapper);
+        ExchangeProvider exchangeProvider = new PsbExchangeProvider("terminalId", "secretKey", PsbPaymentSystem.MASTERCARD, restTemplate, mapper);
         exchangeProvider.getExchangeRates(Instant.now());
     }
 

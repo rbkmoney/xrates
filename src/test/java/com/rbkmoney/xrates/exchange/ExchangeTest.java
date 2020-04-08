@@ -1,7 +1,6 @@
 package com.rbkmoney.xrates.exchange;
 
 import com.rbkmoney.xrates.domain.SourceData;
-import com.rbkmoney.xrates.domain.SourceType;
 import org.junit.Test;
 
 import java.time.Duration;
@@ -23,7 +22,7 @@ public class ExchangeTest {
                 time -> Collections.emptyList(),
                 new CronResolver("00 21 * * *", ZoneId.of("Europe/Moscow"), delay),
                 initialTime,
-                SourceType.CBR
+                "SOURCE"
         );
 
         SourceData sourceData = source.getSourceDataFromInitialTime();
@@ -46,7 +45,7 @@ public class ExchangeTest {
                 time -> Collections.emptyList(),
                 new CronResolver("00 01 * * *", ZoneId.of("Europe/Moscow"), delay),
                 initialTime,
-                SourceType.CBR
+                "SOURCE"
         );
 
         SourceData sourceData = source.getSourceDataFromInitialTime();

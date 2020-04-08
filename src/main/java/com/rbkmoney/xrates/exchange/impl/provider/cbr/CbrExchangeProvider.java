@@ -1,7 +1,6 @@
 package com.rbkmoney.xrates.exchange.impl.provider.cbr;
 
 import com.rbkmoney.xrates.domain.ExchangeRate;
-import com.rbkmoney.xrates.domain.PaymentSystem;
 import com.rbkmoney.xrates.exception.ProviderUnavailableResultException;
 import com.rbkmoney.xrates.exchange.ExchangeProvider;
 import com.rbkmoney.xrates.exchange.impl.provider.cbr.data.CbrExchangeRateData;
@@ -51,7 +50,7 @@ public class CbrExchangeProvider implements ExchangeProvider {
     }
 
     @Override
-    public List<ExchangeRate> getExchangeRates(Instant time) throws ProviderUnavailableResultException {
+    public List<ExchangeRate> getExchangeRates(Instant time) {
         log.info("Trying to get exchange rates from cbr endpoint, url='{}', time='{}'", url, time);
         LocalDate date = time.atZone(timezone).toLocalDate();
 
@@ -63,15 +62,14 @@ public class CbrExchangeProvider implements ExchangeProvider {
                         currency -> new ExchangeRate(
                                 CurrencyUnit.of(currency.getCharCode()),
                                 DESTINATION_CURRENCY_UNIT,
-                                currency.getValue().divide(BigDecimal.valueOf(currency.getNominal())),
-                                PaymentSystem.UNKNOWN
+                                currency.getValue().divide(BigDecimal.valueOf(currency.getNominal()))
                         )
                 ).collect(Collectors.toList());
         log.info("Exchange rates from cbr have been retrieved, url='{}', time='{}', exchangeRates='{}'", url, time, exchangeRates);
         return exchangeRates;
     }
 
-    private CbrExchangeRateData request(String url) throws ProviderUnavailableResultException {
+    private CbrExchangeRateData request(String url) {
         try {
             return restTemplate.getForObject(url, CbrExchangeRateData.class);
         } catch (NestedRuntimeException ex) {
@@ -87,7 +85,7 @@ public class CbrExchangeProvider implements ExchangeProvider {
                 .toUriString();
     }
 
-    private void validateResponse(CbrExchangeRateData cbrExchangeRateData) throws ProviderUnavailableResultException {
+    private void validateResponse(CbrExchangeRateData cbrExchangeRateData) {
         if (cbrExchangeRateData.getCurrencies() == null || cbrExchangeRateData.getCurrencies().isEmpty()) {
             throw new ProviderUnavailableResultException("Empty currency list in cbr response");
         }
