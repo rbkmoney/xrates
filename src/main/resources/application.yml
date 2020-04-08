@@ -1,5 +1,5 @@
-server.port: @server.port@
-spring.application.name: @project.name@
+server.port: 8022
+spring.application.name: xrates
 management.metrics.export.statsd.flavor: etsy
 service:
   mg:
