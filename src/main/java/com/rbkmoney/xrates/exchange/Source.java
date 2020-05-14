@@ -2,7 +2,6 @@ package com.rbkmoney.xrates.exchange;
 
 import com.rbkmoney.xrates.domain.ExchangeRate;
 import com.rbkmoney.xrates.domain.SourceData;
-import com.rbkmoney.xrates.domain.SourceType;
 import com.rbkmoney.xrates.exception.ProviderUnavailableResultException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ public class Source {
 
     private final Instant initialTime;
 
-    private final SourceType sourceType;
+    private final String sourceId;
 
     public SourceData getSourceDataFromInitialTime() throws ProviderUnavailableResultException {
         return getSourceData(initialTime);

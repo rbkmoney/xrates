@@ -8,12 +8,12 @@ import com.rbkmoney.machinarium.client.TBaseEventSinkClient;
 import com.rbkmoney.machinegun.stateproc.AutomatonSrv;
 import com.rbkmoney.machinegun.stateproc.EventSinkSrv;
 import com.rbkmoney.woody.thrift.impl.http.THSpawnClientBuilder;
-import com.rbkmoney.xrates.domain.SourceType;
 import com.rbkmoney.xrates.exception.ProviderUnavailableResultException;
 import com.rbkmoney.xrates.exchange.CronResolver;
 import com.rbkmoney.xrates.exchange.Source;
 import com.rbkmoney.xrates.exchange.impl.provider.cbr.CbrExchangeProvider;
 import com.rbkmoney.xrates.exchange.impl.provider.psb.PsbExchangeProvider;
+import com.rbkmoney.xrates.exchange.impl.provider.psb.data.PsbPaymentSystem;
 import com.rbkmoney.xrates.rate.Change;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -63,37 +63,66 @@ public class ApplicationConfig {
     @Bean
     public Source cbrSource(
             CbrExchangeProvider cbrExchangeProvider,
+            @Value("${sources.cbr.sourceId}") String sourceId,
             @Value("${sources.cbr.cron.value}") String cron,
             @Value("${sources.cbr.cron.timezone}") ZoneId timezone,
             @Value("${sources.cbr.cron.delay}") Duration delay,
-            @Value("${sources.cbr.initialTime}") String initialTime
+            @Value("${sources.cbr.initialTime}") Instant initialTime
     ) {
         CronResolver cronResolver = new CronResolver(cron, timezone, delay);
-        return new Source(cbrExchangeProvider, cronResolver, Instant.parse(initialTime), SourceType.CBR);
+        return new Source(cbrExchangeProvider, cronResolver, initialTime, sourceId);
     }
 
     @Bean
-    public PsbExchangeProvider psbExchangeProvider(
-            @Value("${sources.psb.provider.url}") String url,
-            @Value("${sources.psb.provider.timezone}") ZoneId timezone,
-            @Value("${sources.psb.provider.terminalId}") String terminalId,
-            @Value("${sources.psb.provider.secretKey}") String secretKey,
+    public PsbExchangeProvider psbMastercardExchangeProvider(
+            @Value("${sources.psb-mastercard.provider.url}") String url,
+            @Value("${sources.psb-mastercard.provider.timezone}") ZoneId timezone,
+            @Value("${sources.psb-mastercard.provider.terminalId}") String terminalId,
+            @Value("${sources.psb-mastercard.provider.secretKey}") String secretKey,
+            @Value("${sources.psb-mastercard.provider.paymentSystem}") PsbPaymentSystem paymentSystem,
             RestTemplate restTemplate,
             ObjectMapper objectMapper
     ) {
-        return new PsbExchangeProvider(url, timezone, terminalId, secretKey, restTemplate, objectMapper);
+        return new PsbExchangeProvider(url, timezone, terminalId, secretKey, paymentSystem, restTemplate, objectMapper);
     }
 
     @Bean
-    public Source psbSource(
-            PsbExchangeProvider psbExchangeProvider,
-            @Value("${sources.psb.cron.value}") String cron,
-            @Value("${sources.psb.cron.timezone}") ZoneId timezone,
-            @Value("${sources.psb.cron.delay}") Duration delay,
-            @Value("${sources.psb.initialTime}") String initialTime
+    public Source psbMastercardSource(
+            PsbExchangeProvider psbMastercardExchangeProvider,
+            @Value("${sources.psb-mastercard.sourceId}") String sourceId,
+            @Value("${sources.psb-mastercard.cron.value}") String cron,
+            @Value("${sources.psb-mastercard.cron.timezone}") ZoneId timezone,
+            @Value("${sources.psb-mastercard.cron.delay}") Duration delay,
+            @Value("${sources.psb-mastercard.initialTime}") Instant initialTime
     ) {
         CronResolver cronResolver = new CronResolver(cron, timezone, delay);
-        return new Source(psbExchangeProvider, cronResolver, Instant.parse(initialTime), SourceType.PSB);
+        return new Source(psbMastercardExchangeProvider, cronResolver, initialTime, sourceId);
+    }
+
+    @Bean
+    public PsbExchangeProvider psbVisaExchangeProvider(
+            @Value("${sources.psb-visa.provider.url}") String url,
+            @Value("${sources.psb-visa.provider.timezone}") ZoneId timezone,
+            @Value("${sources.psb-visa.provider.terminalId}") String terminalId,
+            @Value("${sources.psb-visa.provider.secretKey}") String secretKey,
+            @Value("${sources.psb-visa.provider.paymentSystem}") PsbPaymentSystem paymentSystem,
+            RestTemplate restTemplate,
+            ObjectMapper objectMapper
+    ) {
+        return new PsbExchangeProvider(url, timezone, terminalId, secretKey, paymentSystem, restTemplate, objectMapper);
+    }
+
+    @Bean
+    public Source psbVisaSource(
+            PsbExchangeProvider psbVisaExchangeProvider,
+            @Value("${sources.psb-visa.sourceId}") String sourceId,
+            @Value("${sources.psb-visa.cron.value}") String cron,
+            @Value("${sources.psb-visa.cron.timezone}") ZoneId timezone,
+            @Value("${sources.psb-visa.cron.delay}") Duration delay,
+            @Value("${sources.psb-visa.initialTime}") Instant initialTime
+    ) {
+        CronResolver cronResolver = new CronResolver(cron, timezone, delay);
+        return new Source(psbVisaExchangeProvider, cronResolver, initialTime, sourceId);
     }
 
     @Bean

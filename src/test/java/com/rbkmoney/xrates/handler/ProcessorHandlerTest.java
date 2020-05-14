@@ -8,6 +8,7 @@ import com.rbkmoney.woody.api.flow.error.WUnavailableResultException;
 import com.rbkmoney.woody.api.flow.error.WUndefinedResultException;
 import com.rbkmoney.woody.thrift.impl.http.THSpawnClientBuilder;
 import com.rbkmoney.xrates.exception.ProviderUnavailableResultException;
+import com.rbkmoney.xrates.exception.UnknownSourceException;
 import com.rbkmoney.xrates.service.ExchangeRateService;
 import org.apache.thrift.TException;
 import org.junit.Before;
@@ -24,6 +25,7 @@ import java.net.URISyntaxException;
 import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
@@ -49,6 +51,8 @@ public class ProcessorHandlerTest {
 
     @Test(expected = WUndefinedResultException.class)
     public void testWhenInvalidSource() throws TException {
+        given(exchangeRateService.getExchangeRatesBySourceType(eq("incorrect")))
+                .willThrow(new UnknownSourceException("Source not found"));
         client.processSignal(
                 new SignalArgs(
                         Signal.init(
