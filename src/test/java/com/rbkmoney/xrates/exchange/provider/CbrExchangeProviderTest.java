@@ -33,18 +33,26 @@ public class CbrExchangeProviderTest {
         LocalDate date = LocalDate.now();
 
         mockServer.expect(
-                requestTo(CbrExchangeProvider.DEFAULT_ENDPOINT + "?date_req=" + CbrExchangeProvider.DATE_TIME_FORMATTER.format(date))
+                requestTo(CbrExchangeProvider.DEFAULT_ENDPOINT +
+                          "?date_req=" +
+                          CbrExchangeProvider.DATE_TIME_FORMATTER.format(date))
         ).andRespond(
                 withSuccess(
-                        "<ValCurs Date=\"" + CbrLocalDateXmlAdapter.DATE_FORMATTER.format(date) + "\" name=\"Foreign Currency Market\">\n" +
-                                "<Valute ID=\"R01010\">\n" +
-                                "<NumCode>036</NumCode>\n" +
-                                "<CharCode>" + currencyCode + "</CharCode>\n" +
-                                "<Nominal>1</Nominal>\n" +
-                                "<Name>Австралийский доллар</Name>\n" +
-                                "<Value>" + valueString + "</Value>\n" +
-                                "</Valute>" +
-                                "</ValCurs>",
+                        "<ValCurs Date=\"" +
+                        CbrLocalDateXmlAdapter.DATE_FORMATTER.format(date) +
+                        "\" name=\"Foreign Currency Market\">\n" +
+                        "<Valute ID=\"R01010\">\n" +
+                        "<NumCode>036</NumCode>\n" +
+                        "<CharCode>" +
+                        currencyCode +
+                        "</CharCode>\n" +
+                        "<Nominal>1</Nominal>\n" +
+                        "<Name>Австралийский доллар</Name>\n" +
+                        "<Value>" +
+                        valueString +
+                        "</Value>\n" +
+                        "</Valute>" +
+                        "</ValCurs>",
                         MediaType.parseMediaType("application/xml; charset=windows-1251")
                 )
         );
@@ -92,7 +100,9 @@ public class CbrExchangeProviderTest {
                         withSuccess()
                                 .contentType(MediaType.parseMediaType("application/xml; charset=windows-1251"))
                                 .body(
-                                        "<ValCurs Date=\"" + CbrLocalDateXmlAdapter.DATE_FORMATTER.format(date) + "\" name=\"Foreign Currency Market\"></ValCurs>"
+                                        "<ValCurs Date=\"" +
+                                        CbrLocalDateXmlAdapter.DATE_FORMATTER.format(date) +
+                                        "\" name=\"Foreign Currency Market\"></ValCurs>"
                                 )
                 );
 
@@ -105,7 +115,9 @@ public class CbrExchangeProviderTest {
     }
 
     private String buildExpectedUrl(LocalDate date) {
-        return CbrExchangeProvider.DEFAULT_ENDPOINT + "?date_req=" + CbrExchangeProvider.DATE_TIME_FORMATTER.format(date);
+        return CbrExchangeProvider.DEFAULT_ENDPOINT +
+               "?date_req=" +
+               CbrExchangeProvider.DATE_TIME_FORMATTER.format(date);
     }
 
     private List<ExchangeRate> providerRequest(ExchangeProvider exchangeProvider, LocalDate date) {

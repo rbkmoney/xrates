@@ -65,7 +65,12 @@ public class CbrExchangeProvider implements ExchangeProvider {
                                 currency.getValue().divide(BigDecimal.valueOf(currency.getNominal()))
                         )
                 ).collect(Collectors.toList());
-        log.info("Exchange rates from cbr have been retrieved, url='{}', time='{}', exchangeRates='{}'", url, time, exchangeRates);
+        log.info(
+                "Exchange rates from cbr have been retrieved, url='{}', time='{}', exchangeRates='{}'",
+                url,
+                time,
+                exchangeRates
+        );
         return exchangeRates;
     }
 
@@ -73,7 +78,10 @@ public class CbrExchangeProvider implements ExchangeProvider {
         try {
             return restTemplate.getForObject(url, CbrExchangeRateData.class);
         } catch (NestedRuntimeException ex) {
-            throw new ProviderUnavailableResultException(String.format("Failed to get data from cbr endpoint, url='%s'", url), ex);
+            throw new ProviderUnavailableResultException(String.format(
+                    "Failed to get data from cbr endpoint, url='%s'",
+                    url
+            ), ex);
         }
     }
 

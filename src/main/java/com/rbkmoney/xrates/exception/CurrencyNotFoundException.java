@@ -17,7 +17,11 @@ public class CurrencyNotFoundException extends RuntimeException {
         super(cause);
     }
 
-    public CurrencyNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public CurrencyNotFoundException(
+            String message,
+            Throwable cause,
+            boolean enableSuppression,
+            boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

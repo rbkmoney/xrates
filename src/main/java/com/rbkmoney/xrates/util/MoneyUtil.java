@@ -21,7 +21,10 @@ public class MoneyUtil {
      * @param exchangeRate - rate at which source currency will be exchanged for destination currency
      * @return rational number
      */
-    public static BigFraction exchangeRateToRationalValue(CurrencyUnit source, CurrencyUnit destination, BigDecimal exchangeRate) {
+    public static BigFraction exchangeRateToRationalValue(
+            CurrencyUnit source,
+            CurrencyUnit destination,
+            BigDecimal exchangeRate) {
         BigDecimal minorRate = exchangeRate
                 .movePointLeft(source.getDecimalPlaces() - destination.getDecimalPlaces());
         BigInteger denominator = minorRate.scale() > 0 ? BigInteger.TEN.pow(minorRate.scale()) : BigInteger.ONE;

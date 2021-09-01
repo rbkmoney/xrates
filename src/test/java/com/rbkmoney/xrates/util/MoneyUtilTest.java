@@ -18,9 +18,14 @@ public class MoneyUtilTest {
         testRateRationalConversion(CurrencyUnit.JPY, CurrencyUnit.of("CLF"), new BigDecimal("78.3123"), 234);
     }
 
-    private void testRateRationalConversion(CurrencyUnit source, CurrencyUnit destination, BigDecimal rate, int sourceCount) {
+    private void testRateRationalConversion(
+            CurrencyUnit source,
+            CurrencyUnit destination,
+            BigDecimal rate,
+            int sourceCount) {
         BigFraction rationalMinorRate = MoneyUtil.exchangeRateToRationalValue(source, destination, rate);
-        assertEquals(rate.multiply(BigDecimal.valueOf(sourceCount)).stripTrailingZeros(),
+        assertEquals(
+                rate.multiply(BigDecimal.valueOf(sourceCount)).stripTrailingZeros(),
                 new BigFraction(sourceCount)
                         .multiply(rationalMinorRate)
                         .bigDecimalValue()

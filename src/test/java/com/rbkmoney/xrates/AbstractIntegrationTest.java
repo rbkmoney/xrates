@@ -19,8 +19,8 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @ContextConfiguration(classes = XRatesApplication.class, initializers = AbstractIntegrationTest.Initializer.class)
 public abstract class AbstractIntegrationTest {
 
-    public final static String MG_IMAGE = "dr2.rbkmoney.com/rbkmoney/machinegun";
-    public final static String MG_TAG = "1d05e14c3678b2761a28a2400b40d0a29c7a3c42";
+    public static final String MG_IMAGE = "dr2.rbkmoney.com/rbkmoney/machinegun";
+    public static final String MG_TAG = "1d05e14c3678b2761a28a2400b40d0a29c7a3c42";
 
     @ClassRule
     public static GenericContainer machinegunContainer = new GenericContainer(MG_IMAGE + ":" + MG_TAG)
@@ -43,8 +43,16 @@ public abstract class AbstractIntegrationTest {
         @Override
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
             TestPropertyValues.of(
-                    "service.mg.automaton.url=http://" + machinegunContainer.getContainerIpAddress() + ":" + machinegunContainer.getMappedPort(8022) + "/v1/automaton",
-                    "service.mg.eventSink.url=http://" + machinegunContainer.getContainerIpAddress() + ":" + machinegunContainer.getMappedPort(8022) + "/v1/event_sink"
+                    "service.mg.automaton.url=http://" +
+                    machinegunContainer.getContainerIpAddress() +
+                    ":" +
+                    machinegunContainer.getMappedPort(8022) +
+                    "/v1/automaton",
+                    "service.mg.eventSink.url=http://" +
+                    machinegunContainer.getContainerIpAddress() +
+                    ":" +
+                    machinegunContainer.getMappedPort(8022) +
+                    "/v1/event_sink"
             ).applyTo(configurableApplicationContext);
         }
     }

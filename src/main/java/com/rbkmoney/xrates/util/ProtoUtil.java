@@ -8,9 +8,9 @@ import com.rbkmoney.xrates.base.Rational;
 import com.rbkmoney.xrates.base.TimestampInterval;
 import com.rbkmoney.xrates.domain.ExchangeRate;
 import com.rbkmoney.xrates.domain.SourceData;
+import com.rbkmoney.xrates.rate.*;
 import com.rbkmoney.xrates.rate.Event;
 import com.rbkmoney.xrates.rate.SinkEvent;
-import com.rbkmoney.xrates.rate.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.math3.fraction.BigFraction;
@@ -84,7 +84,10 @@ public class ProtoUtil {
                 exchangeRate.getConversionRate()
         );
 
-        return new Rational(rationalValue.getNumerator().longValueExact(), rationalValue.getDenominator().longValueExact());
+        return new Rational(
+                rationalValue.getNumerator().longValueExact(),
+                rationalValue.getDenominator().longValueExact()
+        );
     }
 
     public static Currency buildCurrency(CurrencyUnit currencyUnit) {
@@ -111,18 +114,18 @@ public class ProtoUtil {
         return Instant.parse(timestampInterval.getUpperBoundExclusive());
     }
 
-    public static Change getFirstEvent(List<TMachineEvent<Change>> tMachineEvents) {
-        if (tMachineEvents.isEmpty()) {
+    public static Change getFirstEvent(List<TMachineEvent<Change>> thriftMachineEvents) {
+        if (thriftMachineEvents.isEmpty()) {
             return null;
         }
-        return tMachineEvents.get(0).getData();
+        return thriftMachineEvents.get(0).getData();
     }
 
-    public static Change getLastEvent(List<TMachineEvent<Change>> tMachineEvents) {
-        if (tMachineEvents.isEmpty()) {
+    public static Change getLastEvent(List<TMachineEvent<Change>> thriftMachineEvents) {
+        if (thriftMachineEvents.isEmpty()) {
             return null;
         }
-        return tMachineEvents.get(tMachineEvents.size() - 1).getData();
+        return thriftMachineEvents.get(thriftMachineEvents.size() - 1).getData();
     }
 
 }
