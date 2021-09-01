@@ -53,16 +53,30 @@ public class ExchangeRateService {
     public SourceData getExchangeRatesBySourceType(String sourceId) {
         log.info("Trying to get initial exchange rates, sourceId='{}'", sourceId);
         SourceData sourceData = getSourceByType(sourceId).getSourceDataFromInitialTime();
-        log.info("Exchange rates have been retrieved, sourceId='{}', from='{}', to='{}', count='{}', nextExecutionTime='{}'",
-                sourceId, sourceData.getLowerBound(), sourceData.getUpperBound(), sourceData.getRates().size(), sourceData.getNextExecutionTime());
+        log.info(
+                "Exchange rates have been retrieved, sourceId='{}', from='{}', to='{}', count='{}', " +
+                "nextExecutionTime='{}'",
+                sourceId,
+                sourceData.getLowerBound(),
+                sourceData.getUpperBound(),
+                sourceData.getRates().size(),
+                sourceData.getNextExecutionTime()
+        );
         return sourceData;
     }
 
     public SourceData getExchangeRatesBySourceType(Instant time, String sourceId) {
         log.info("Trying to get exchange rates, time='{}', sourceId='{}'", time, sourceId);
         SourceData sourceData = getSourceByType(sourceId).getSourceData(time);
-        log.info("Exchange rates have been retrieved, sourceId='{}', from='{}', to='{}', count='{}', nextExecutionTime='{}'",
-                sourceId, sourceData.getLowerBound(), sourceData.getUpperBound(), sourceData.getRates().size(), sourceData.getNextExecutionTime());
+        log.info(
+                "Exchange rates have been retrieved, sourceId='{}', from='{}', to='{}', count='{}', " +
+                "nextExecutionTime='{}'",
+                sourceId,
+                sourceData.getLowerBound(),
+                sourceData.getUpperBound(),
+                sourceData.getRates().size(),
+                sourceData.getNextExecutionTime()
+        );
         return sourceData;
     }
 
@@ -85,7 +99,12 @@ public class ExchangeRateService {
                 .multiply(
                         new BigFraction(quote.getExchangeRate().getP(), quote.getExchangeRate().getQ())
                 );
-        log.info("Amount have been converted, sourceId='{}', conversionRequest='{}', convertedAmount='{}'", sourceId, conversionRequest, convertedAmount);
+        log.info(
+                "Amount have been converted, sourceId='{}', conversionRequest='{}', convertedAmount='{}'",
+                sourceId,
+                conversionRequest,
+                convertedAmount
+        );
         return convertedAmount;
     }
 
@@ -118,11 +137,14 @@ public class ExchangeRateService {
         throw new UnknownSourceException(String.format("Unknown source, sourceType='%s'", sourceId));
     }
 
-    private Quote filterQuoteBySourceAndDestination(List<Quote> quotes, String sourceCurrency, String destinationCurrency) {
+    private Quote filterQuoteBySourceAndDestination(
+            List<Quote> quotes,
+            String sourceCurrency,
+            String destinationCurrency) {
         return quotes.stream()
                 .filter(
                         quote -> quote.getSource().getSymbolicCode().equals(sourceCurrency)
-                                && quote.getDestination().getSymbolicCode().equals(destinationCurrency)
+                                 && quote.getDestination().getSymbolicCode().equals(destinationCurrency)
                 )
                 .findFirst()
                 .orElseThrow(CurrencyNotFoundException::new);

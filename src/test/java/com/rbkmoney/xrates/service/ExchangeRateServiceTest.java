@@ -87,8 +87,15 @@ public class ExchangeRateServiceTest {
                                         new ExchangeRateCreated(
                                                 new ExchangeRateData().setInterval(
                                                         new TimestampInterval(
-                                                                LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toString(),
-                                                                LocalDate.now().plusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC).toString()
+                                                                LocalDate.now()
+                                                                        .atStartOfDay()
+                                                                        .toInstant(ZoneOffset.UTC)
+                                                                        .toString(),
+                                                                LocalDate.now()
+                                                                        .plusDays(1)
+                                                                        .atStartOfDay()
+                                                                        .toInstant(ZoneOffset.UTC)
+                                                                        .toString()
                                                         )
                                                 )
                                         )
@@ -122,13 +129,26 @@ public class ExchangeRateServiceTest {
                                                         new ExchangeRateData()
                                                                 .setInterval(
                                                                         new TimestampInterval(
-                                                                                LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toString(),
-                                                                                LocalDate.now().plusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC).toString()
+                                                                                LocalDate.now()
+                                                                                        .atStartOfDay()
+                                                                                        .toInstant(ZoneOffset.UTC)
+                                                                                        .toString(),
+                                                                                LocalDate.now()
+                                                                                        .plusDays(1)
+                                                                                        .atStartOfDay()
+                                                                                        .toInstant(ZoneOffset.UTC)
+                                                                                        .toString()
                                                                         )
                                                                 )
                                                                 .setQuotes(List.of(new Quote(
-                                                                        new Currency(conversionRequest.getSource(), (short) 2),
-                                                                        new Currency(conversionRequest.getDestination(), (short) 2),
+                                                                        new Currency(
+                                                                                conversionRequest.getSource(),
+                                                                                (short) 2
+                                                                        ),
+                                                                        new Currency(
+                                                                                conversionRequest.getDestination(),
+                                                                                (short) 2
+                                                                        ),
                                                                         new Rational(
                                                                                 700247,
                                                                                 10000

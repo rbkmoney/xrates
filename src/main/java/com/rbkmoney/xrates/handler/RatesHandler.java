@@ -30,7 +30,8 @@ public class RatesHandler implements RatesSrv.Iface {
     }
 
     @Override
-    public Rational getConvertedAmount(String sourceId, ConversionRequest conversionRequest) throws QuoteNotFound, CurrencyNotFound {
+    public Rational getConvertedAmount(String sourceId, ConversionRequest conversionRequest)
+            throws QuoteNotFound, CurrencyNotFound {
         try {
             BigFraction convertedAmount = exchangeRateService.getConvertedAmount(sourceId, conversionRequest);
             return new Rational(convertedAmount.getNumeratorAsLong(), convertedAmount.getDenominatorAsLong());

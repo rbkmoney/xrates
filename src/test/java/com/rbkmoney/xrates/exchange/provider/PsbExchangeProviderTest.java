@@ -39,24 +39,25 @@ public class PsbExchangeProviderTest {
 
         mockServer.expect(
                 requestTo(
-                        PsbExchangeProvider.DEFAULT_ENDPOINT
-                                + "?TERMINAL=" + terminalId
-                                + "&DATE=" + PsbExchangeProvider.DATE_TIME_FORMATTER.format(date)
-                                + "&P_SIGN=7734df96d9f918c2f374091509a8903b8654b46f"
+                        PsbExchangeProvider.DEFAULT_ENDPOINT +
+                        "?TERMINAL=" + terminalId +
+                        "&DATE=" + PsbExchangeProvider.DATE_TIME_FORMATTER.format(date) +
+                        "&P_SIGN=7734df96d9f918c2f374091509a8903b8654b46f"
                 )
         ).andRespond(
                 withSuccess(
                         "{'rates':[" +
-                                "{'CURR':'USD','IPS':'MasterCard','BUY':'61.55','CB':'63.1385'}," +
-                                "{'CURR':'USD','IPS':'Visa','BUY':'60.32','CB':'63.1385'}," +
-                                "{'CURR':'EUR','IPS':'MasterCard','BUY':'68','CB':'69.5976'}," +
-                                "{'CURR':'EUR','IPS':'Visa','BUY':'66.36','CB':'69.5976'}" +
-                                "]}",
+                        "{'CURR':'USD','IPS':'MasterCard','BUY':'61.55','CB':'63.1385'}," +
+                        "{'CURR':'USD','IPS':'Visa','BUY':'60.32','CB':'63.1385'}," +
+                        "{'CURR':'EUR','IPS':'MasterCard','BUY':'68','CB':'69.5976'}," +
+                        "{'CURR':'EUR','IPS':'Visa','BUY':'66.36','CB':'69.5976'}" +
+                        "]}",
                         MediaType.TEXT_PLAIN
                 )
         );
 
-        ExchangeProvider exchangeProvider = new PsbExchangeProvider(terminalId, secretKey, PsbPaymentSystem.MASTERCARD, restTemplate, mapper);
+        ExchangeProvider exchangeProvider =
+                new PsbExchangeProvider(terminalId, secretKey, PsbPaymentSystem.MASTERCARD, restTemplate, mapper);
         List<ExchangeRate> exchangeRates = exchangeProvider.getExchangeRates(
                 date.atStartOfDay()
                         .atZone(CbrExchangeProvider.DEFAULT_TIMEZONE)
@@ -77,9 +78,13 @@ public class PsbExchangeProviderTest {
     public void testWhenError() {
         mockServer
                 .expect(anything())
-                .andRespond(withSuccess("{'ERROR':'TERMINAL IS NULL'}", MediaType.parseMediaType("text/plain; charset=UTF-8")));
+                .andRespond(withSuccess(
+                        "{'ERROR':'TERMINAL IS NULL'}",
+                        MediaType.parseMediaType("text/plain; charset=UTF-8")
+                ));
 
-        ExchangeProvider exchangeProvider = new PsbExchangeProvider("terminalId", "secretKey", PsbPaymentSystem.MASTERCARD, restTemplate, mapper);
+        ExchangeProvider exchangeProvider =
+                new PsbExchangeProvider("terminalId", "secretKey", PsbPaymentSystem.MASTERCARD, restTemplate, mapper);
         exchangeProvider.getExchangeRates(Instant.now());
     }
 
@@ -89,7 +94,8 @@ public class PsbExchangeProviderTest {
                 .expect(anything())
                 .andRespond(withSuccess("{'rates':[]}", MediaType.parseMediaType("text/plain; charset=UTF-8")));
 
-        ExchangeProvider exchangeProvider = new PsbExchangeProvider("terminalId", "secretKey", PsbPaymentSystem.MASTERCARD, restTemplate, mapper);
+        ExchangeProvider exchangeProvider =
+                new PsbExchangeProvider("terminalId", "secretKey", PsbPaymentSystem.MASTERCARD, restTemplate, mapper);
         exchangeProvider.getExchangeRates(Instant.now());
     }
 

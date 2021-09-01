@@ -17,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
@@ -53,15 +54,33 @@ public class PsbExchangeProvider implements ExchangeProvider {
 
     private final ObjectMapper objectMapper;
 
-    public PsbExchangeProvider(String terminalId, String secretKey, PsbPaymentSystem psbPaymentSystem, RestTemplate restTemplate, ObjectMapper objectMapper) {
+    public PsbExchangeProvider(
+            String terminalId,
+            String secretKey,
+            PsbPaymentSystem psbPaymentSystem,
+            RestTemplate restTemplate,
+            ObjectMapper objectMapper) {
         this(DEFAULT_ENDPOINT, terminalId, secretKey, psbPaymentSystem, restTemplate, objectMapper);
     }
 
-    public PsbExchangeProvider(String url, String terminalId, String secretKey, PsbPaymentSystem psbPaymentSystem, RestTemplate restTemplate, ObjectMapper objectMapper) {
+    public PsbExchangeProvider(
+            String url,
+            String terminalId,
+            String secretKey,
+            PsbPaymentSystem psbPaymentSystem,
+            RestTemplate restTemplate,
+            ObjectMapper objectMapper) {
         this(url, DEFAULT_TIMEZONE, terminalId, secretKey, psbPaymentSystem, restTemplate, objectMapper);
     }
 
-    public PsbExchangeProvider(String url, ZoneId timezone, String terminalId, String secretKey, PsbPaymentSystem psbPaymentSystem, RestTemplate restTemplate, ObjectMapper objectMapper) {
+    public PsbExchangeProvider(
+            String url,
+            ZoneId timezone,
+            String terminalId,
+            String secretKey,
+            PsbPaymentSystem psbPaymentSystem,
+            RestTemplate restTemplate,
+            ObjectMapper objectMapper) {
         this.url = url;
         this.timezone = timezone;
         this.terminalId = terminalId;
@@ -87,7 +106,12 @@ public class PsbExchangeProvider implements ExchangeProvider {
                         currency.getValue()
                 )).collect(Collectors.toList());
 
-        log.info("Exchange rates from psb have been retrieved, url='{}', time='{}', exchangeRates='{}'", url, time, exchangeRates);
+        log.info(
+                "Exchange rates from psb have been retrieved, url='{}', time='{}', exchangeRates='{}'",
+                url,
+                time,
+                exchangeRates
+        );
         return exchangeRates;
     }
 
@@ -95,7 +119,10 @@ public class PsbExchangeProvider implements ExchangeProvider {
         try {
             return objectMapper.readValue(restTemplate.getForObject(url, String.class), PsbExchangeRootData.class);
         } catch (IOException | NestedRuntimeException ex) {
-            throw new ProviderUnavailableResultException(String.format("Failed to get data from psb endpoint, url='%s'", url), ex);
+            throw new ProviderUnavailableResultException(String.format(
+                    "Failed to get data from psb endpoint, url='%s'",
+                    url
+            ), ex);
         }
     }
 
@@ -134,7 +161,10 @@ public class PsbExchangeProvider implements ExchangeProvider {
 
     private void validateResponse(PsbExchangeRootData psbExchangeRootData) {
         if (psbExchangeRootData.hasError()) {
-            throw new ProviderUnavailableResultException(String.format("Error in psb response, error='%s'", psbExchangeRootData.getError()));
+            throw new ProviderUnavailableResultException(String.format(
+                    "Error in psb response, error='%s'",
+                    psbExchangeRootData.getError()
+            ));
         }
         if (psbExchangeRootData.getRates() == null || psbExchangeRootData.getRates().isEmpty()) {
             throw new ProviderUnavailableResultException("Empty currency list in psb response");

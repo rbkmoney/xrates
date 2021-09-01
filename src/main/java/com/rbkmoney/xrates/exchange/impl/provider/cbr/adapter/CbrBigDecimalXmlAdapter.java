@@ -1,6 +1,7 @@
 package com.rbkmoney.xrates.exchange.impl.provider.cbr.adapter;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 import java.math.BigDecimal;
 import java.util.Optional;
 

@@ -31,10 +31,11 @@ public class ProcessorHandler extends AbstractProcessorHandler<Value, Change> {
     }
 
     @Override
-    protected SignalResultData<Change> processSignalInit(TMachine<Change> tMachine,
-                                                         Value value) {
-        String machineId = tMachine.getMachineId();
-        log.info("Trying to process signal init, namespace='{}', machineId='{}'", tMachine.getNs(), machineId);
+    protected SignalResultData<Change> processSignalInit(
+            TMachine<Change> thriftMachine,
+            Value value) {
+        String machineId = thriftMachine.getMachineId();
+        log.info("Trying to process signal init, namespace='{}', machineId='{}'", thriftMachine.getNs(), machineId);
 
         SourceData sourceData = exchangeRateService.getExchangeRatesBySourceType(machineId);
 
@@ -49,14 +50,16 @@ public class ProcessorHandler extends AbstractProcessorHandler<Value, Change> {
     }
 
     @Override
-    protected SignalResultData<Change> processSignalTimeout(TMachine<Change> tMachine,
-                                                            List<TMachineEvent<Change>> tMachineEvents) {
-        String machineId = tMachine.getMachineId();
+    protected SignalResultData<Change> processSignalTimeout(
+            TMachine<Change> thriftMachine,
+            List<TMachineEvent<Change>> thriftMachineEvents) {
+        String machineId = thriftMachine.getMachineId();
 
         log.info("Trying to process signal timeout, namespace='{}', machineId='{}', events='{}'",
-                tMachine.getNs(), machineId, tMachineEvents);
+                thriftMachine.getNs(), machineId, thriftMachineEvents
+        );
 
-        Change change = getLastEvent(tMachineEvents);
+        Change change = getLastEvent(thriftMachineEvents);
         if (change == null) {
             throw new IllegalStateException("Failed to process signal timeout because previous changes not found");
         }
@@ -72,15 +75,17 @@ public class ProcessorHandler extends AbstractProcessorHandler<Value, Change> {
     }
 
     @Override
-    protected CallResultData<Change> processCall(String namespace,
-                                                 String machineId,
-                                                 Value args,
-                                                 List<TMachineEvent<Change>> tMachineEvents) {
+    protected CallResultData<Change> processCall(
+            String namespace,
+            String machineId,
+            Value args,
+            List<TMachineEvent<Change>> thriftMachineEvents) {
         return new CallResultData<>(
                 Value.nl(new Nil()),
-                getLastEvent(tMachineEvents),
+                getLastEvent(thriftMachineEvents),
                 Collections.emptyList(),
-                new ComplexAction());
+                new ComplexAction()
+        );
     }
 
 }
